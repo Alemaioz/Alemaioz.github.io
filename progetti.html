@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex"> <!-- per evitare che il sito venga indicizzato da google -->
+    <title>Progetti - Alessandro Maiorana</title>
+    <link rel="icon" type="image/svg+xml" href="logoAM.svg">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="progetti-page">
+    <div id="preloader">
+        <div class="loader"></div>
+    </div>
+        
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo">
+                <img src="logoAMDesignlinear.svg" alt="Logo di Alessandro Maiorana">
+            </a>
+            
+            <nav>
+                <ul>
+                    <li class="mobile-logo-container"><!--Un container per il logo che si sovrappone quando apro il menu hamburger-->
+                    <a href="index.html">
+                        <img src="logoAMDesignlinear.svg" alt="Logo di Alessandro Maiorana">
+                    </a>
+                    </li>
+
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="progetti.html">Progetti</a></li>
+                    <li><a href="aboutme.html">Chi sono</a></li>
+                    <a href="contact.html" class="btn btn-primary nav-cta">Contattami</a>
+                </ul>
+            </nav>
+
+
+            <button class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero iniziale (entra senza lock, poi si attiva lo scroll "one page") -->
+        <section class="snap-section progetti-hero">
+            <div class="container-narrow">
+                <h1 class="hover-text-container">
+                    <span class="base-text">Progetti</span>
+                    <span class="hover-text">Progetti</span>
+                </h1>
+                <p class="lead">
+                    Scorri per scoprire i progetti: tre studi concreti, ognuno con risultati misurabili.
+                </p>
+                <div class="scroll-indicator" aria-hidden="true">↓</div>
+            </div>
+        </section>
+
+        <!-- Sezioni scorrevoli (blocca lo scroll con JS) -->
+        <div class="snap-container" id="progetti-snap">
+
+            <section class="snap-section progetti-snap" data-section="0" style="background-image: url('images/mockup-progetti-motorvip.png');">
+                <div class="progetti-section">
+                    <div class="progetti-text" data-parallax-speed="0.6">
+                        <div class="project-meta">
+                            <span class="project-type">UX/UI Design</span>
+                            <span class="project-duration">2 mesi</span>
+                        </div>
+                        <h2>MotorVip — Redesign per un concessionario moto</h2>
+                        <p>Ho riprogettato l’esperienza utente per trasformare un sito vetrina in una piattaforma di vendita.</p>
+                        <div class="progetti-cards">
+                            <div class="progetti-card">
+                                <h4>Ricerca utenti</h4>
+                                <p>Interviste, analisi dei bisogni e mappatura dei customer journey per capire i punti critici.</p>
+                                <span class="tag">User Research</span>
+                            </div>
+                            <div class="progetti-card">
+                                <h4>Prototipi rapidi</h4>
+                                <p>Wireframe e prototipi interattivi creati per testare flussi di acquisto e filtraggio prodotti.</p>
+                                <span class="tag">Prototipazione</span>
+                            </div>
+                            <div class="progetti-card">
+                                <h4>Sistema di design</h4>
+                                <p>Design system modulare per mantenere coerenza visiva tra il sito e l’esperienza mobile.</p>
+                                <span class="tag">Design System</span>
+                            </div>
+                        </div>
+                        <a href="case-study-concessionario-moto.html" class="btn btn-primary">Scopri il case study</a>
+                    </div>
+                </div>
+            </section>
+
+            <section class="snap-section progetti-snap reverse" data-section="1" style="background-image: url('images/mockup-progetti-teatrobasilica.webp');">
+                <div class="progetti-section">
+                    <div class="progetti-text" data-parallax-speed="0.6">
+                        <div class="project-meta">
+                            <span class="project-type">Progetto UX</span>
+                            <span class="project-duration">1 mese</span>
+                        </div>
+                        <h2>Teatro Basilica — Coinvolgimento e accessibilità</h2>
+                        <p>Restyling strategico per avvicinare il pubblico al teatro indipendente, con un calendario eventi più chiaro.</p>
+                        <div class="progetti-cards">
+                            <div class="progetti-card">
+                                <h4>Architettura chiara</h4>
+                                <p>Struttura delle informazioni ripensata per ridurre i click e trovare gli eventi rapidamente.</p>
+                                <span class="tag">Information Architecture</span>
+                            </div>
+                            <div class="progetti-card">
+                                <h4>Accessibilità</h4>
+                                <p>Colori e contrasti ottimizzati, keyboard navigation e gestione della lettura automatica.</p>
+                                <span class="tag">Accessibility</span>
+                            </div>
+                            <div class="progetti-card">
+                                <h4>Contenuti dinamici</h4>
+                                <p>Modulo eventi e calendario interattivo con filtri personalizzati per categorie.</p>
+                                <span class="tag">Contenuti dinamici</span>
+                            </div>
+                        </div>
+                        <a href="case-study-teatro-basilica.html" class="btn btn-primary">Scopri il case study</a>
+                    </div>
+                </div>
+            </section>
+
+            <section class="snap-section progetti-snap" data-section="2" style="background-image: url('images/mockup_villasullostretto-macbook.png');">
+                <div class="progetti-section only-text">
+                    <div class="progetti-text" data-parallax-speed="0.6">
+                        <div class="project-meta">
+                            <span class="project-type">Product Design</span>
+                            <span class="project-duration">3 mesi</span>
+                        </div>
+                        <h2>Villa sullo Stretto — Booking senza commissioni</h2>
+                        <p>Progettazione di una piattaforma proprietaria per azzerare le commissioni delle OTA.</p>
+                        <div class="progetti-cards">
+                            <div class="progetti-card">
+                                <h4>Flusso di prenotazione</h4>
+                                <p>Esperienza checkout con widget di calendario e selezione camera ottimizzata per conversione.</p>
+                                <span class="tag">Booking UX</span>
+                            </div>
+                            <div class="progetti-card">
+                                <h4>Gestione offerte</h4>
+                                <p>Pannello di controllo per promozioni, codici sconto e disponibilità in tempo reale.</p>
+                                <span class="tag">Gestione contenuti</span>
+                            </div>
+                            <div class="progetti-card">
+                                <h4>Analisi dati</h4>
+                                <p>Dashboard analitica per monitorare conversioni, tassi di abbandono e performance delle tariffe.</p>
+                                <span class="tag">Data Driven</span>
+                            </div>
+                        </div>
+                        <a href="case-study-villa-sullo-stretto.html" class="btn btn-primary">Scopri il case study</a>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- CTA / Footer section -->
+        <section class="snap-section project-cta-section">
+            <div class="container-narrow">
+                <h2>Ti interessa lavorare insieme?</h2>
+                <p>Se ti riconosci in questi progetti, scrivimi e troviamo insieme la strada migliore per trasformare l’idea in prodotto.</p>
+                <div class="cta-buttons">
+                    <a href="contact.html" class="btn btn-light-solid">Contattami</a>
+                    <a href="aboutme.html" class="btn btn-light-outline">Chi sono</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+<footer>
+    <div class="container">
+        <div class="footer-top">
+            <div class="footer-col footer-about">
+                <h3>Alessandro Maiorana</h3>
+                <p>UX/UI Designer focused on human-centered design</p>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/in/alessandro-maiorana-0ab4261b9/" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></a>
+                </div>
+            </div>
+
+            <div class="footer-col footer-links">
+                <h3>Link rapidi</h3>
+                <ul>
+                    <li><a href="aboutme.html">Chi sono</a></li>
+                    <li><a href="progetti.html">Progetti</a></li>
+                    <li><a href="contact.html">Contatti</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col footer-contact">
+                <h3>Contattami</h3>
+                <ul>
+                    <li>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                        <a href="mailto:alemaiorana94@gmail.com">alemaiorana94@gmail.com</a>
+                    </li>
+                    <li>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                        <span>Messina, IT</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <hr>
+            <p>&copy; 2025 Alessandro Maiorana All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<script src="js/script.js"></script>
+
+</body>
+</html> 

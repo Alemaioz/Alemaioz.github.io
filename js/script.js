@@ -34,7 +34,8 @@ document.addEventListener('DOMContentLoaded', () => {
         navLinks.classList.toggle('nav-active');
     });
 
-// --- INIZIO BLOCCO PER TRANSIZIONE FLUIDA, QUANDO SI CLICCA SU UN LINK DAL MENU MOBILE PRIMA SI CHIUDE IL MENU CON ANIMAZIONE POI PARTE IL CARICAMENTO DELLA PAGINA---
+// --- INIZIO BLOCCO PER TRANSIZIONE FLUIDA, QUANDO SI CLICCA SU UN LINK DAL MENU MOBILE.
+//  PRIMA SI CHIUDE IL MENU CON ANIMAZIONE POI PARTE IL CARICAMENTO DELLA PAGINA---
 
     document.querySelectorAll('header nav ul li a').forEach(link => {
       link.addEventListener('click', function(e) {
@@ -190,13 +191,125 @@ function requestTick() {
 document.addEventListener('DOMContentLoaded', () => {
     // Gestisci le animazioni allo scroll
     handleScrollAnimations();
+
+    // Attiva lo scroll lock per la pagina Progetti
+    initProgettiScrollLock();
     
     // Aggiungi l'event listener per lo scroll con ottimizzazione
     window.addEventListener('scroll', requestTick);
     
     // Gestisci anche il resize della finestra
-    window.addEventListener('resize', handleScrollAnimations);
+    window.addEventListener('resize', () => {
+        handleScrollAnimations();
+        initProgettiScrollLock();
+    });
 })
+
+
+function initProgettiScrollLock() {
+    if (!document.body.classList.contains('progetti-page')) return;
+
+    const body = document.body;
+    if (body.dataset.progettiScrollInit === 'true') return;
+    body.dataset.progettiScrollInit = 'true';
+
+    const container = document.getElementById('progetti-snap');
+    const footer = document.querySelector('.project-cta-section');
+    if (!container || !footer) return;
+
+    const sections = Array.from(container.querySelectorAll('.progetti-snap'));
+    let isAnimating = false;
+    let currentSection = 0;
+
+    function scrollToSection(index) {
+        if (isAnimating || index < 0 || index >= sections.length) return;
+        isAnimating = true;
+        sections[index].scrollIntoView({ behavior: 'smooth', block: 'center' });
+        currentSection = index;
+        setTimeout(() => { isAnimating = false; }, 500);
+    }
+
+    function lockScrollToStart() {
+        if (isAnimating) return;
+        isAnimating = true;
+        container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        setTimeout(() => {
+            body.classList.add('scroll-locked');
+            currentSection = 0;
+            isAnimating = false;
+        }, 600);
+    }
+
+    function unlockScrollToHero() {
+        if (isAnimating) return;
+        isAnimating = true;
+
+        body.classList.remove('scroll-locked');
+        const hero = document.querySelector('.progetti-hero');
+        if (hero) {
+            hero.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        setTimeout(() => { isAnimating = false; }, 600);
+    }
+
+    function unlockScrollToFooter() {
+        if (isAnimating) return;
+        isAnimating = true;
+
+        body.classList.remove('scroll-locked');
+        footer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        setTimeout(() => { isAnimating = false; }, 600);
+    }
+
+    function relockToLast() {
+        if (isAnimating) return;
+        isAnimating = true;
+
+        body.classList.add('scroll-locked');
+        currentSection = sections.length - 1;
+        sections[currentSection].scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        setTimeout(() => { isAnimating = false; }, 600);
+    }
+
+    window.addEventListener('wheel', function(e) {
+        if (isAnimating) {
+            e.preventDefault();
+            return;
+        }
+
+        const isLocked = body.classList.contains('scroll-locked');
+
+        if (!isLocked) {
+            if (e.deltaY > 0) {
+                e.preventDefault();
+                lockScrollToStart();
+            } else if (e.deltaY < 0) {
+                e.preventDefault();
+                relockToLast();
+            }
+        } else {
+            e.preventDefault();
+            if (e.deltaY > 0) {
+                if (currentSection < sections.length - 1) {
+                    scrollToSection(currentSection + 1);
+                } else {
+                    unlockScrollToFooter();
+                }
+            } else if (e.deltaY < 0) {
+                if (currentSection > 0) {
+                    scrollToSection(currentSection - 1);
+                } else {
+                    unlockScrollToHero();
+                }
+            }
+        }
+    }, { passive: false });
+}
 
 
 
