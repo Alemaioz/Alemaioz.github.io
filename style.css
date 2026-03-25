@@ -46,6 +46,7 @@ body.progetti-page:not(.scroll-locked) {
 
 body.progetti-page.scroll-locked {
     overflow: hidden;
+    scroll-snap-type: none; /* disable snap when locked */
 }
 
 body.progetti-page .snap-section {
@@ -1824,7 +1825,7 @@ blockquote {
     /* Responsive per pagina progetti */
     body.progetti-page .snap-section {
         padding: 0 1rem;
-        height: auto;
+        height: 100vh; /* fixed height for scroll-snap on mobile */
         min-height: 100vh;
     }
 

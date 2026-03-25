@@ -209,6 +209,15 @@ document.addEventListener('DOMContentLoaded', () => {
 function initProgettiScrollLock() {
     if (!document.body.classList.contains('progetti-page')) return;
 
+    // Check if mobile (simple check)
+    const isMobile = window.innerWidth <= 768 || 'ontouchstart' in window;
+
+    if (isMobile) {
+        // On mobile, use CSS scroll-snap instead of JS lock
+        document.body.classList.remove('scroll-locked');
+        return;
+    }
+
     const body = document.body;
     if (body.dataset.progettiScrollInit === 'true') return;
     body.dataset.progettiScrollInit = 'true';
