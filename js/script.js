@@ -276,6 +276,55 @@ function initProgettiScrollLock() {
         setTimeout(() => { isAnimating = false; }, 600);
     }
 
+    let touchStartY = 0;
+    let touchEndY = 0;
+
+    window.addEventListener('touchstart', function(e) {
+        touchStartY = e.changedTouches[0].screenY;
+    }, { passive: true });
+
+    window.addEventListener('touchend', function(e) {
+        touchEndY = e.changedTouches[0].screenY;
+        handleSwipe();
+    }, { passive: true });
+
+    function handleSwipe() {
+        if (isAnimating) return;
+
+        const swipeThreshold = 50; // minimum distance for swipe
+        const swipeDistance = touchStartY - touchEndY;
+
+        if (Math.abs(swipeDistance) < swipeThreshold) return;
+
+        const isLocked = body.classList.contains('scroll-locked');
+
+        if (!isLocked) {
+            if (swipeDistance > 0) {
+                // swipe up
+                lockScrollToStart();
+            } else if (swipeDistance < 0) {
+                // swipe down
+                relockToLast();
+            }
+        } else {
+            if (swipeDistance > 0) {
+                // swipe up
+                if (currentSection < sections.length - 1) {
+                    scrollToSection(currentSection + 1);
+                } else {
+                    unlockScrollToFooter();
+                }
+            } else if (swipeDistance < 0) {
+                // swipe down
+                if (currentSection > 0) {
+                    scrollToSection(currentSection - 1);
+                } else {
+                    unlockScrollToHero();
+                }
+            }
+        }
+    }
+
     window.addEventListener('wheel', function(e) {
         if (isAnimating) {
             e.preventDefault();

@@ -57,6 +57,7 @@ body.progetti-page .snap-section {
     justify-content: center;
     padding: 0 2rem;
     position: relative;
+    transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 body.progetti-page .progetti-snap {
@@ -1825,6 +1826,10 @@ blockquote {
         padding: 0 1rem;
         height: auto;
         min-height: 100vh;
+    }
+
+    body.progetti-page.scroll-locked {
+        overflow: visible; /* allow touch scroll on mobile */
     }
 
     body.progetti-page .progetti-snap::before {
