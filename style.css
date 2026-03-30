@@ -1,9 +1,17 @@
+@font-face {
+    font-family: 'Google Sans Flex';
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url('fonts/google-sans-flex-latin.woff2') format('woff2');
+}
+
 /* ======================== */
 /* STILI GENERALI E GLOBALI */
 /* ======================== */
 
 body {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Google Sans Flex', sans-serif;
     background-color: #f8f9fa;
     /* Sfondo grigio chiaro per tutto il sito */
     color: #333;
@@ -16,6 +24,10 @@ body {
 html {
     scroll-behavior: smooth;
     /*tutti gli scroll sul sito sono più delicati*/
+}
+
+h2 {
+    font-weight: 600;
 }
 
 
@@ -100,13 +112,15 @@ body.progetti-page .progetti-snap::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(270deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.45) 35%, rgba(0, 0, 0, 0.1) 70%, rgba(0, 0, 0, 0) 100%);
+    /* Normal: Scuro a sinistra, sfuma a destra per accogliere il testo a sinistra */
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.45) 35%, rgba(0, 0, 0, 0.1) 70%, rgba(0, 0, 0, 0) 100%);
     pointer-events: none;
     z-index: 1;
 }
 
 body.progetti-page .progetti-snap.reverse::before {
-    background: linear-gradient(90deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.45) 35%, rgba(0, 0, 0, 0.1) 70%, rgba(0, 0, 0, 0) 100%);
+    /* Reverse: Scuro a destra, sfuma a sinistra per accogliere il testo a destra */
+    background: linear-gradient(270deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.45) 35%, rgba(0, 0, 0, 0.1) 70%, rgba(0, 0, 0, 0) 100%);
 }
 
 body.progetti-page .progetti-section {
@@ -116,22 +130,42 @@ body.progetti-page .progetti-section {
     width: 100%;
     margin: 0 auto;
     display: grid;
+    /* Normal Layout: Testo (4fr) a SX, Spazio (1fr) a DX */
     grid-template-columns: minmax(360px, 4fr) 1fr;
     gap: 2.5rem;
     align-items: center;
     padding: 0;
-    /* Rimosso padding, ora è sul contenitore padre .progetti-snap */
+    padding-top: 2.5rem;
+}
+
+body.progetti-page .progetti-snap.reverse .progetti-section {
+    /* Reverse Layout: Spazio (1fr) a SX, Testo (4fr) a DX */
+    grid-template-columns: 1fr minmax(360px, 4fr);
+}
+
+body.progetti-page .progetti-snap.reverse .progetti-text {
+    /* Posiziona il testo nella seconda colonna del reverse */
+    grid-column: 2;
+    /* Allinea il CONTENITORE stesso a destra della griglia */
+    justify-self: end;
+    /* Allinea tutto a destra per il reverse */
+    align-items: flex-end;
+    text-align: right;
 }
 
 body.progetti-page .progetti-text {
     background: transparent;
     color: rgba(255, 255, 255, 0.95);
     border: none;
-    border-radius: 22px;
-    padding: 2.5rem;
     backdrop-filter: none;
     box-shadow: none;
     width: 80%;
+
+    /* Gestione dello spazio TRA i messaggi interni (Titolo, P, Cards) */
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: flex-start;
 }
 
 body.progetti-page .progetti-cards {
@@ -156,6 +190,8 @@ body.progetti-page .progetti-card {
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
+    align-items: flex-start;
+    text-align: left; /* Forza il testo a sinistra anche se il padre è allineato a destra */
 }
 
 body.progetti-page .progetti-card h4 {
@@ -182,20 +218,14 @@ body.progetti-page .progetti-card .tag {
 
 body.progetti-page .progetti-text h2 {
     margin-top: 0;
+    margin-bottom: 0;
+    /* Rimuove il margine base del browser */
     font-size: 3rem;
     line-height: 1.1;
 }
 
-@media (max-width: 900px) {
-    body.progetti-page .progetti-text h2 {
-        font-size: 2.4rem;
-    }
-}
 
-/* Sezione con solo testo: mantieni il contenuto allineato a destra */
-.progetti-section.only-text>.progetti-text {
-    grid-column: 3;
-}
+/* Rimossa ex-regola only text inefficace dato l'alternanza tramite .reverse */
 
 body.progetti-page .project-image {
     justify-content: center;
@@ -869,7 +899,7 @@ footer {
 }
 
 .page-title-section h2 {
-    font-size: 42px;
+    font-size: 2.5rem;
     font-weight: 700;
     margin-top: 0;
     margin-bottom: 20px;
@@ -1083,7 +1113,8 @@ hanno già un'animazione in ingresso*/
 }
 
 .section-title h2 {
-    font-size: 36px;
+    font-size: 2.25rem;
+    /* 36px */
     font-weight: 700;
     margin-bottom: 15px;
 }
@@ -1180,7 +1211,8 @@ hanno già un'animazione in ingresso*/
 }
 
 .about-text h2 {
-    font-size: 36px;
+    font-size: 2.25rem;
+    /* 36px */
     font-weight: 700;
     margin-bottom: 20px;
 }
@@ -1279,7 +1311,8 @@ hanno già un'animazione in ingresso*/
 }
 
 .cta-section h2 {
-    font-size: 36px;
+    font-size: 2.25rem;
+    /* 36px */
     font-weight: 700;
     margin-bottom: 20px;
 }
@@ -1798,21 +1831,22 @@ blockquote {
     }
 
     /* Responsive per pagina progetti */
-    body.progetti-page .progetti-section {
+    body.progetti-page .progetti-section,
+    body.progetti-page .progetti-snap.reverse .progetti-section {
         grid-template-columns: 1fr;
         gap: 2rem;
-        padding: 2rem 1rem;
     }
 
-    body.progetti-page .progetti-text {
-        padding: 1.5rem;
-        text-align: center;
+    body.progetti-page .progetti-snap.reverse .progetti-text {
+        grid-column: 1;
+        /* Reset colonna su mobile a destra */
     }
+
 
     body.progetti-page .progetti-cards {
         gap: 1rem;
         max-width: 600px;
-        margin: 0 auto;
+        margin: 0;
     }
 
     body.progetti-page .progetti-card {
@@ -1821,18 +1855,11 @@ blockquote {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+    @media (max-width: 900px) {
+        body.progetti-page .progetti-text h2 {
+            font-size: 2.4rem;
+        }
+    }
 
 
     .process-steps {
@@ -1887,12 +1914,10 @@ blockquote {
 
     body.progetti-page .progetti-section {
         gap: 1.5rem;
-        padding: 1.5rem 0.5rem;
     }
 
     body.progetti-page .progetti-text {
         padding: 1rem;
-        text-align: center;
     }
 
     body.progetti-page .progetti-text h2 {
@@ -1902,7 +1927,7 @@ blockquote {
     body.progetti-page .progetti-cards {
         gap: 1rem;
         max-width: 500px;
-        margin: 0 auto;
+        margin: 0;
     }
 
     body.progetti-page .progetti-card {
@@ -2108,9 +2133,15 @@ blockquote {
         font-size: 40px;
     }
 
+    .section-title p {
+        margin: 0;
+    }
+
     .section-title h2 {
         font-size: 32px;
     }
+
+
 
     .about-content {
         flex-direction: column;
