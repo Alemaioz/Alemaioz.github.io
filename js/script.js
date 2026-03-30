@@ -221,6 +221,15 @@ function initProgettiScrollLock() {
     let isAnimating = false;
     let currentSection = 0;
 
+    // Controlla se è mobile/tablet (larghezza <= 992px)
+    const isMobile = window.innerWidth <= 992;
+
+    if (isMobile) {
+        // Su mobile: scroll fluido con snap CSS, nessun lock JS
+        return;
+    }
+
+    // Su desktop/tablet: comportamento lock esistente
     function scrollToSection(index) {
         if (isAnimating || index < 0 || index >= sections.length) return;
         isAnimating = true;
@@ -285,12 +294,24 @@ function initProgettiScrollLock() {
         const isLocked = body.classList.contains('scroll-locked');
 
         if (!isLocked) {
-            if (e.deltaY > 0) {
-                e.preventDefault();
-                lockScrollToStart();
-            } else if (e.deltaY < 0) {
-                e.preventDefault();
-                relockToLast();
+            // Capiame se siamo nella Hero o nel Footer
+            const scrollY = window.scrollY || window.pageYOffset;
+            const containerTop = container.offsetTop || (window.innerHeight / 2);
+
+            if (scrollY < containerTop - 10) {
+                // Siamo nella Hero
+                if (e.deltaY > 0) {
+                    e.preventDefault();
+                    lockScrollToStart();
+                }
+                // Se scorriamo in su, lasciamo scorrere normalmente
+            } else {
+                // Siamo dopo i progetti (nel Footer/CTA)
+                if (e.deltaY < 0) {
+                    e.preventDefault();
+                    relockToLast();
+                }
+                // Se scorriamo in giù nel footer, lasciamo scorrere normalmente
             }
         } else {
             e.preventDefault();
