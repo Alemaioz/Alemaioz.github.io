@@ -2175,6 +2175,7 @@ blockquote {
     .hero-section {
         text-align: center;
         padding: 3.5rem 0 6.5rem 0;
+        height: 90vh;
     }
 
     .hero-text p {
