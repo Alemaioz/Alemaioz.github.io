@@ -13,21 +13,19 @@
 body {
     font-family: 'Google Sans Flex', sans-serif;
     background-color: #f8f9fa;
-    /* Sfondo grigio chiaro per tutto il sito */
     color: #333;
     margin: 0;
     line-height: 1.6;
     overflow-x: hidden;
-    /*IMPEDISCE ALLA PAGINA DI ALLARGARSI PER CONTENERE LE ANIMAZIONI CHE PARTONO FUORI DALLO SCEHRMO*/
 }
 
 html {
     scroll-behavior: smooth;
-    /*tutti gli scroll sul sito sono più delicati*/
 }
 
+h1,
 h2 {
-    font-weight: 600;
+    font-weight: 450;
 }
 
 
@@ -308,6 +306,7 @@ body.progetti-page .sublead {
     gap: 2rem;
     padding: 1rem 1rem;
     align-items: stretch;
+    border-bottom: 1px solid #e7e7e7b2;
 }
 
 .project-image,
@@ -407,7 +406,12 @@ body.progetti-page .sublead {
 
 
 .container {
+    margin: 0 auto;
+    padding: 0 2rem;
     max-width: 1100px;
+}
+
+.container-hero {
     margin: 0 auto;
     padding: 0 2rem;
 }
@@ -796,7 +800,6 @@ footer {
     /* Base per il posizionamento assoluto del figlio */
     cursor: pointer;
     font-size: 52px;
-    font-weight: 700;
     line-height: 1.2;
 }
 
@@ -833,31 +836,56 @@ footer {
 
 .hero-section {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 2.5rem;
+    justify-content: center;
+    text-align: center;
     padding: 2.5rem 0;
     height: 60vh;
+    position: relative;
+    /* necessario per il canvas physics in posizione assoluta */
 }
 
+/* Canvas del motore fisico — sta dietro a tutto il contenuto della hero */
+#physics-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    /* non intercetta click/hover sugli elementi sopra */
+    z-index: 0;
+}
+
+/* Il testo hero sta sopra il canvas */
 .hero-text {
-    flex: 1;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 800px;
 }
 
 .hero-text h1 {
     font-size: 52px;
-    font-weight: 700;
     line-height: 1.2;
     margin-bottom: 20px;
+}
+
+#home-hero-title {
+    font-size: 72px;
 }
 
 .hero-text p {
     font-size: 16px;
     max-width: 500px;
-    margin-bottom: 30px;
+    margin: 0 auto 30px auto;
 }
 
 .hero-buttons {
     display: flex;
+    align-items: center;
+    justify-content: center;
     gap: 15px;
 }
 
@@ -899,8 +927,6 @@ footer {
 }
 
 .page-title-section h2 {
-    font-size: 2.5rem;
-    font-weight: 700;
     margin-top: 0;
     margin-bottom: 20px;
 }
@@ -1115,7 +1141,6 @@ hanno già un'animazione in ingresso*/
 .section-title h2 {
     font-size: 2.25rem;
     /* 36px */
-    font-weight: 700;
     margin-bottom: 15px;
 }
 
@@ -1194,9 +1219,12 @@ hanno già un'animazione in ingresso*/
 .about-section {
     padding: 5rem 0;
     background-color: white;
+    display: flex;
+    justify-content: center;
 }
 
 .about-content {
+    max-width: 1100px;
     display: flex;
     align-items: stretch;
     gap: 60px;
@@ -1213,7 +1241,6 @@ hanno già un'animazione in ingresso*/
 .about-text h2 {
     font-size: 2.25rem;
     /* 36px */
-    font-weight: 700;
     margin-bottom: 20px;
 }
 
@@ -1313,7 +1340,6 @@ hanno già un'animazione in ingresso*/
 .cta-section h2 {
     font-size: 2.25rem;
     /* 36px */
-    font-weight: 700;
     margin-bottom: 20px;
 }
 
@@ -1909,6 +1935,11 @@ blockquote {
         -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     }
 
+    .container-hero {
+        margin: 0 auto;
+        padding: 0 1rem;
+    }
+
     /* Responsive per pagina progetti */
     body.progetti-page .snap-section {
         padding: 1rem 1rem;
@@ -1927,7 +1958,7 @@ blockquote {
     /* Su mobile il gradiente è uguale per tutte le sezioni (normale e reverse) */
     body.progetti-page .progetti-snap::before,
     body.progetti-page .progetti-snap.reverse::before {
-        background: linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.2) 30%, rgba(0, 0, 0, 0) 70%);
+        background: linear-gradient(180deg, rgba(0, 0, 0, 1.4) 0%, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0) 70%);
     }
 
     body.progetti-page .progetti-section,
@@ -2170,7 +2201,8 @@ blockquote {
         height: 280px;
     }
 
-    .hero-text h1 {
+    .hero-text h1,
+    #home-hero-title {
         font-size: 40px;
     }
 
@@ -2252,7 +2284,9 @@ blockquote {
     }
 
     .case-study-title h1 {
-        font-size: 36px;
+        font-size: 32px;
+        line-height: 1.4;
+        font-weight: 450;
     }
 
     .research-cards-container {
