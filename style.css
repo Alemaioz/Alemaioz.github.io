@@ -13,14 +13,17 @@
 body {
     font-family: 'Google Sans Flex', sans-serif;
     background-color: #f8f9fa;
+    /* Sfondo grigio chiaro per tutto il sito */
     color: #333;
     margin: 0;
     line-height: 1.6;
     overflow-x: hidden;
+    /*IMPEDISCE ALLA PAGINA DI ALLARGARSI PER CONTENERE LE ANIMAZIONI CHE PARTONO FUORI DALLO SCEHRMO*/
 }
 
 html {
     scroll-behavior: smooth;
+    /*tutti gli scroll sul sito sono più delicati*/
 }
 
 h1,
@@ -406,12 +409,7 @@ body.progetti-page .sublead {
 
 
 .container {
-    margin: 0 auto;
-    padding: 0 2rem;
     max-width: 1100px;
-}
-
-.container-hero {
     margin: 0 auto;
     padding: 0 2rem;
 }
@@ -836,12 +834,10 @@ footer {
 
 .hero-section {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    text-align: center;
+    gap: 2.5rem;
     padding: 2.5rem 0;
-    height: 80vh;
+    height: 60vh;
     position: relative;
     /* necessario per il canvas physics in posizione assoluta */
 }
@@ -858,12 +854,15 @@ footer {
     z-index: 0;
 }
 
-/* Il testo hero sta sopra il canvas */
-.hero-text {
+/* Testo e immagine hero stanno sopra il canvas */
+.hero-text,
+.hero-image {
     position: relative;
     z-index: 1;
-    width: 100%;
-    max-width: 800px;
+}
+
+.hero-text {
+    flex: 1;
 }
 
 .hero-text h1 {
@@ -872,20 +871,14 @@ footer {
     margin-bottom: 20px;
 }
 
-#home-hero-title {
-    font-size: 72px;
-}
-
 .hero-text p {
     font-size: 16px;
     max-width: 500px;
-    margin: 0 auto 30px auto;
+    margin-bottom: 30px;
 }
 
 .hero-buttons {
     display: flex;
-    align-items: center;
-    justify-content: center;
     gap: 15px;
 }
 
@@ -1219,12 +1212,9 @@ hanno già un'animazione in ingresso*/
 .about-section {
     padding: 5rem 0;
     background-color: white;
-    display: flex;
-    justify-content: center;
 }
 
 .about-content {
-    max-width: 1100px;
     display: flex;
     align-items: stretch;
     gap: 60px;
@@ -1935,11 +1925,6 @@ blockquote {
         -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     }
 
-    .container-hero {
-        margin: 0 auto;
-        padding: 0 1rem;
-    }
-
     /* Responsive per pagina progetti */
     body.progetti-page .snap-section {
         padding: 1rem 1rem;
@@ -2201,8 +2186,7 @@ blockquote {
         height: 280px;
     }
 
-    .hero-text h1,
-    #home-hero-title {
+    .hero-text h1 {
         font-size: 40px;
     }
 
