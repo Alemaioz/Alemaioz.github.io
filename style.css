@@ -68,7 +68,6 @@ body.progetti-page.scroll-locked {
 
     body.progetti-page .snap-section {
         max-width: 1100px;
-
         scroll-snap-align: start;
         min-height: 100vh;
         height: auto;
@@ -1775,22 +1774,27 @@ blockquote {
     scroll-margin-top: 70px;
 }
 
-
 /* ================================================= */
-/* SEZIONE PER L'ADATTABILITÀ (MOBILE & TABLET)      */
+/* ================================================= */
+/* ------------- BREAKPOINT PER TABLET ------------- */
+/* ================================================= */
 /* ================================================= */
 
-/* --- Breakpoint per Tablet (e schermi medi) --- */
+
 @media (max-width: 992px) {
 
     .container,
     .container-narrow,
     body.progetti-page .snap-section {
-        padding: 0 1.5rem;
+        padding: 0 1rem;
     }
 
     .hero-image {
         display: none;
+    }
+
+    .text-justify {
+        text-align: justify;
     }
 
 
@@ -1799,7 +1803,7 @@ blockquote {
         height: unset;
         grid-template-columns: 1fr;
         gap: 1rem;
-        padding: 3rem 1.5rem;
+        padding: 3rem 1rem;
     }
 
 
@@ -1878,7 +1882,17 @@ blockquote {
     }
 }
 
-/* --- Breakpoint per Mobile (e schermi piccoli) --- */
+
+
+
+/* ------------------------------------*/
+/* ------------------------------------*/
+/* ------ BREAKPOINT PER MOBILE ------ */
+/* ------------------------------------*/
+/* ------------------------------------*/
+
+
+
 @media (max-width: 768px) {
 
     .cta-buttons {
@@ -1897,7 +1911,7 @@ blockquote {
 
     /* Responsive per pagina progetti */
     body.progetti-page .snap-section {
-        padding: 0 1rem;
+        padding: 1rem 1rem;
         height: auto;
         /* Altezza dinamica per effetto feed */
         scroll-snap-align: start;
@@ -1916,26 +1930,49 @@ blockquote {
         background: linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.2) 30%, rgba(0, 0, 0, 0) 70%);
     }
 
-    body.progetti-page .progetti-section {
+    body.progetti-page .progetti-section,
+    body.progetti-page .progetti-snap.reverse .progetti-section {
+        grid-template-columns: 1fr;
+        justify-content: center;
         gap: 1.5rem;
     }
 
-    body.progetti-page .progetti-text {
-        padding: 1rem;
+    body.progetti-page .progetti-text,
+    body.progetti-page .progetti-snap.reverse .progetti-text {
+        grid-column: 1;
+        justify-self: center;
+        align-items: center;
+        text-align: center;
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
     }
 
     body.progetti-page .progetti-text h2 {
         font-size: 2rem;
+        text-align: center;
     }
 
     body.progetti-page .progetti-cards {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
         gap: 1rem;
         max-width: 500px;
-        margin: 0;
+        margin: 0 auto;
+    }
+
+    body.progetti-page .progetti-card:first-child {
+        grid-column: 1;
     }
 
     body.progetti-page .progetti-card {
         padding: 1rem;
+        align-items: center;
+        text-align: center;
+    }
+
+    body.progetti-page .progetti-card .tag {
+        align-self: center;
     }
 
     body.progetti-page .progetti-card h4 {
