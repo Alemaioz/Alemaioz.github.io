@@ -841,7 +841,7 @@ footer {
     justify-content: center;
     text-align: center;
     padding: 2.5rem 0;
-    height: 60vh;
+    height: 80vh;
     position: relative;
     /* necessario per il canvas physics in posizione assoluta */
 }
