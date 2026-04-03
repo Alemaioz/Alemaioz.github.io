@@ -603,75 +603,129 @@ nav a:hover {
 
 /* --- LE MIE CTA --- */
 
+/* Mobile First (Base) */
 .btn {
     font-family: 'Montserrat', sans-serif;
-    /*Sto specificando un font solo per i bottoni */
-    padding: 10px 28px;
-    border-radius: 8px;
+    font-weight: 500;
+    padding: 10px 24px;
+    /* Thinner padding for a cleaner look */
+    border-radius: 999px;
+    /* Pill shape is very sleek and modern */
     text-decoration: none;
-    font-weight: 600;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    font-size: 15px;
+    letter-spacing: 0.3px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: 12px;
     border: 1px solid transparent;
-    /* Aggiunto per coerenza dimensionale */
-}
-
-.btn:hover {
-    transform: translateY(-2px);
-}
-
-.btn-primary {
-    color: #fff;
-    border: 1px solid transparent;
-    background: #074CFF;
-    /* Blu classico, accessibile */
-    transition: all 0.3s ease;
-    /* Transizione per un hover più fluido */
-    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.302);
-}
-
-.btn-primary:hover {
-    color: #fff;
-    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.302);
-}
-
-.btn-primary:active,
-.btn-secondary:active {
-    transform: scale(0.96);
-    box-shadow: 0 2px 8px rgba(0, 68, 255, 0.18);
-    filter: brightness(0.9);
-}
-
-.btn-secondary {
-    background-color: #000000;
-    color: #ffffff;
-    border: 1px solid #000000;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.14);
-    /* Ombra nera moderna */
-}
-
-.btn-secondary:hover {
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.18);
-    /* Ombra nera più intensa in hover */
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    /* For pseudo-elements */
 }
 
 .btn svg {
     width: 18px;
     height: 18px;
+    transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-/*Focus alle cta e i link per la navigazione da tastiera*/
+/* Base Interactions */
+.btn:active {
+    transform: scale(0.96);
+}
+
 .btn:focus {
     outline: none;
 }
 
 .btn:focus-visible {
     outline: 2px solid #b366ff;
-    outline-offset: 2px;
-    transition: box-shadow 0.2s;
+    outline-offset: 4px;
+}
+
+/* -- Primary Button: Breathtaking & Clean -- */
+.btn-primary {
+    color: #fff;
+    background: linear-gradient(135deg, #053bbb 0%, #8c3df5 100%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Shimmer Highlight matching modern Vercel/Awwwards trends */
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 150%;
+    height: 100%;
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(255, 255, 255, 0.3),
+            transparent);
+    transform: skewX(-20deg);
+    transition: all 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+    z-index: -1;
+}
+
+/* Subtle glow below the button */
+.btn-primary::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(135deg, #053bbb, #8c3df5);
+    z-index: -2;
+    filter: blur(12px);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+/* -- Secondary Button: Clean minimal contrast -- */
+.btn-secondary {
+    background-color: transparent;
+    color: #333;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+/* --- LE MIE CTA (Desktop Enhancements) --- */
+@media (min-width: 992px) {
+    .btn {
+        padding: 12px 32px;
+        font-size: 16px;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+    }
+
+    .btn-primary:hover {
+        box-shadow: 0 8px 25px rgba(118, 59, 255, 0.35);
+        border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    /* Sweep the shine across on hover */
+    .btn-primary:hover::before {
+        left: 150%;
+    }
+
+    /* Reveal the beautiful vibrant glow */
+    .btn-primary:hover::after {
+        opacity: 0.4;
+    }
+
+    .btn-secondary:hover {
+        color: #000;
+        border-color: rgba(0, 0, 0, 0.3);
+        background-color: rgba(0, 0, 0, 0.02);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.06);
+    }
+
+    .btn:hover svg {
+        transform: translateX(4px);
+    }
 }
 
 a:focus {
@@ -863,17 +917,19 @@ footer {
     position: relative;
     z-index: 1;
     width: 100%;
-    max-width: 800px;
 }
 
 .hero-text h1 {
     font-size: 52px;
-    line-height: 1.2;
-    margin-bottom: 20px;
+    line-height: 1;
 }
 
 #home-hero-title {
-    font-size: 72px;
+    font-size: 90px;
+    letter-spacing: -2px;
+    max-width: 1300px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .hero-text p {
@@ -1340,7 +1396,6 @@ hanno già un'animazione in ingresso*/
 .cta-section h2 {
     font-size: 2.25rem;
     /* 36px */
-    margin-bottom: 20px;
 }
 
 .cta-section p {
@@ -1938,6 +1993,8 @@ blockquote {
     .container-hero {
         margin: 0 auto;
         padding: 0 1rem;
+        display: flex;
+        justify-content: center;
     }
 
     /* Responsive per pagina progetti */
