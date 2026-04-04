@@ -39,7 +39,7 @@ h2 {
 .h1-hero {
     font-size: 32px;
     /* Base Mobile */
-    line-height: 1.0;
+    line-height: 32px;
     font-weight: 450;
     margin: 0 auto 2.5rem auto;
     max-width: 90%;
