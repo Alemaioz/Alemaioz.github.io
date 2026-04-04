@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // --- INIZIO BLOCCO PER TRANSIZIONE FLUIDA, QUANDO SI CLICCA SU UN LINK DAL MENU MOBILE.
 //  PRIMA SI CHIUDE IL MENU CON ANIMAZIONE POI PARTE IL CARICAMENTO DELLA PAGINA---
 
-    document.querySelectorAll('header nav ul li a').forEach(link => {
+    document.querySelectorAll('header nav ul li a, header nav ul a.btn-primary').forEach(link => {
       link.addEventListener('click', function(e) {
         // Solo su mobile e solo se il menu è attivo
         if (window.innerWidth <= 768 && navLinks.classList.contains('nav-active')) {
@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 // --- FINE BLOCCO PER TRANSIZIONE FLUIDA ---
 
-    document.querySelectorAll('header nav ul li a').forEach(link => {
+    document.querySelectorAll('header nav ul li a, header nav ul a.btn-primary').forEach(link => {
       link.addEventListener('click', function(e) {
         const navUl = document.querySelector('header nav ul');
         // Chiudi il menu solo se è attivo (mobile)

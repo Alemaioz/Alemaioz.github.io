@@ -66,7 +66,7 @@
     ];
 
     // Disabilita su mobile (no mouse, meno performance)
-    const PARTICLE_COUNT = window.innerWidth < 768 ? 0 : 40;
+    const PARTICLE_COUNT = window.innerWidth < 768 ? 20 : 40;
 
     const particles = [];
     const driftForces = []; // Forze di deriva lente per ciascuna particella

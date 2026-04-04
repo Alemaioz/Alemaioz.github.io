@@ -31,6 +31,95 @@ h2 {
 
 
 
+/* =========================== */
+/* SISTEMA TIPOGRAFICO (MOBILE-FIRST) */
+/* =========================== */
+
+/* --- H1 Hero (Unico) --- */
+.h1-hero {
+    font-size: 32px;
+    /* Base Mobile */
+    line-height: 1.0;
+    font-weight: 450;
+    margin: 0 auto 2.5rem auto;
+    max-width: 90%;
+    /* Evita che il testo tocchi i bordi su schermi piccoli */
+}
+
+/* --- H2 Per Sezioni Principali (Shared) --- */
+.h2-section {
+    font-size: 26px;
+    /* Base Mobile */
+    line-height: 1.2;
+    font-weight: 450;
+    margin-bottom: 20px;
+}
+
+/* --- H2 Per Progetti in Home (Cards) --- */
+.h2-project-home {
+    font-size: 22px;
+    /* Base Mobile */
+    line-height: 1.3;
+    font-weight: 450;
+    margin-bottom: 15px;
+}
+
+/* --- H2 Per Lista Progetti (Scroll Page) --- */
+.h2-project-list {
+    font-size: 2rem;
+    /* Base Mobile */
+    line-height: 1.1;
+    font-weight: 450;
+    margin: 0;
+}
+
+/* --- Paragrafo Standard --- */
+.p-main {
+    font-size: 16px;
+    /* Base Mobile */
+    line-height: 1.6;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+/* --- Desktop Typography Enhancements --- */
+@media (min-width: 992px) {
+
+    .h1-hero {
+        font-size: 48px;
+        /* Desktop Standard (Case Study) */
+    }
+
+    #home-hero-title.h1-hero {
+        font-size: 90px;
+        /* Hero Home (Ultra Large) */
+        letter-spacing: -3px;
+        margin: 0 auto;
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+        max-width: 1300px;
+    }
+
+    .h2-section {
+        font-size: 2.25rem;
+        /* ~36px */
+    }
+
+    .h2-project-home {
+        font-size: 28px;
+    }
+
+    .h2-project-list {
+        font-size: 3rem;
+        /* 48px specifica per la pagina progetti */
+    }
+
+    .p-main {
+        font-size: 16px;
+    }
+}
+
+
 /*PROVIAMO L'EFFETTO PARALLAX*/
 .parallax-container {
     perspective: 800px;
@@ -59,7 +148,7 @@ body.progetti-page.scroll-locked {
 }
 
 /* Su mobile/tablet: scroll fluido con snap proximity per effetto feed */
-@media (max-width: 992px) {
+@media (max-width: 991px) {
     body.progetti-page {
         scroll-snap-type: y proximity;
     }
@@ -214,13 +303,7 @@ body.progetti-page .progetti-card .tag {
     color: rgba(255, 255, 255, 0.95);
 }
 
-body.progetti-page .progetti-text h2 {
-    margin-top: 0;
-    margin-bottom: 0;
-    /* Rimuove il margine base del browser */
-    font-size: 3rem;
-    line-height: 1.1;
-}
+/* body.progetti-page .progetti-text h2 rimosso - gestito da .h2-project-list */
 
 
 /* Rimossa ex-regola only text inefficace dato l'alternanza tramite .reverse */
@@ -570,12 +653,8 @@ nav {
 }
 
 /* Spazio tra i link e la CTA */
-nav .nav-cta {
+nav .btn-primary {
     margin-left: 30px;
-    padding: 8px 28px;
-    font-size: 14px;
-    font-weight: 600;
-    border-radius: 8px;
 }
 
 nav ul {
@@ -600,7 +679,6 @@ nav a:hover {
     color: #000;
 }
 
-
 /* --- LE MIE CTA --- */
 
 /* Mobile First (Base) */
@@ -608,29 +686,25 @@ nav a:hover {
     font-family: 'Montserrat', sans-serif;
     font-weight: 500;
     padding: 10px 24px;
-    /* Thinner padding for a cleaner look */
     border-radius: 999px;
-    /* Pill shape is very sleek and modern */
     text-decoration: none;
     font-size: 15px;
-    letter-spacing: 0.3px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 12px;
     border: 1px solid transparent;
-    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    transition: all 1s cubic-bezier(0.23, 1, 0.32, 1);
     cursor: pointer;
     position: relative;
     overflow: hidden;
     z-index: 1;
-    /* For pseudo-elements */
 }
 
 .btn svg {
     width: 18px;
     height: 18px;
-    transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    transition: transform 1s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 /* Base Interactions */
@@ -647,14 +721,16 @@ nav a:hover {
     outline-offset: 4px;
 }
 
-/* -- Primary Button: Breathtaking & Clean -- */
+/* -- Primary Button -- */
 .btn-primary {
     color: #fff;
     background: linear-gradient(135deg, #053bbb 0%, #8c3df5 100%);
+    background-size: 102% 102%;
+    /* Fix rendering artifact at rounded edges */
+    background-position: center;
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* Shimmer Highlight matching modern Vercel/Awwwards trends */
 .btn-primary::before {
     content: '';
     position: absolute;
@@ -667,60 +743,60 @@ nav a:hover {
             rgba(255, 255, 255, 0.3),
             transparent);
     transform: skewX(-20deg);
-    transition: all 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+    transition: all 1.4s cubic-bezier(0.23, 1, 0.32, 1);
     z-index: -1;
 }
 
-/* Subtle glow below the button */
-.btn-primary::after {
-    content: '';
-    position: absolute;
-    inset: -2px;
-    background: linear-gradient(135deg, #053bbb, #8c3df5);
-    z-index: -2;
-    filter: blur(12px);
-    opacity: 0;
-    transition: opacity 0.5s ease;
-}
-
-/* -- Secondary Button: Clean minimal contrast -- */
+/* -- Secondary Button -- */
 .btn-secondary {
     background-color: transparent;
     color: #333;
     border: 1px solid rgba(0, 0, 0, 0.15);
 }
 
-/* --- LE MIE CTA (Desktop Enhancements) --- */
-@media (min-width: 992px) {
-    .btn {
-        padding: 12px 32px;
-        font-size: 16px;
-    }
+/* -- Light Buttons (For dark backgrounds) -- */
+.btn-light-solid {
+    background-color: #fff;
+    color: #111;
+    border-color: #fff;
+}
 
-    .btn:hover {
-        transform: translateY(-2px);
-    }
+.btn-light-outline {
+    background-color: transparent;
+    color: #fff;
+    border: 1px solid #fff;
+}
+
+/* --- LE MIE CTA (Desktop Enhancements) --- */
+
+@media (min-width: 992px) {
+
 
     .btn-primary:hover {
-        box-shadow: 0 8px 25px rgba(118, 59, 255, 0.35);
-        border-color: rgba(255, 255, 255, 0.4);
+        border-color: rgba(161, 161, 161, 0.4);
+        filter: brightness(0.85);
+        color: #fff;
     }
 
-    /* Sweep the shine across on hover */
     .btn-primary:hover::before {
         left: 150%;
-    }
-
-    /* Reveal the beautiful vibrant glow */
-    .btn-primary:hover::after {
-        opacity: 0.4;
     }
 
     .btn-secondary:hover {
         color: #000;
         border-color: rgba(0, 0, 0, 0.3);
-        background-color: rgba(0, 0, 0, 0.02);
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.06);
+        background-color: rgba(0, 0, 0, 0.08);
+    }
+
+    .btn-light-solid:hover {
+        background-color: #ddd;
+        border-color: #ddd;
+    }
+
+    .btn-light-outline:hover {
+        background-color: #fff;
+        color: #111;
+        border-color: #fff;
     }
 
     .btn:hover svg {
@@ -853,8 +929,6 @@ footer {
     position: relative;
     /* Base per il posizionamento assoluto del figlio */
     cursor: pointer;
-    font-size: 52px;
-    line-height: 1.2;
 }
 
 .base-text {
@@ -874,6 +948,8 @@ footer {
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+    padding: inherit;
+    box-sizing: border-box;
     opacity: 0;
     /* 1. Di default, il testo colorato è completamente trasparente (invisibile) */
     transition: opacity 0.4s ease-in-out;
@@ -917,25 +993,6 @@ footer {
     position: relative;
     z-index: 1;
     width: 100%;
-}
-
-.hero-text h1 {
-    font-size: 52px;
-    line-height: 1;
-}
-
-#home-hero-title {
-    font-size: 90px;
-    letter-spacing: -2px;
-    max-width: 1300px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.hero-text p {
-    font-size: 16px;
-    max-width: 500px;
-    margin: 0 auto 30px auto;
 }
 
 .hero-buttons {
@@ -982,20 +1039,9 @@ footer {
     /* Bordo sottile per separare */
 }
 
-.page-title-section h2 {
-    margin-top: 0;
-    margin-bottom: 20px;
-}
+/* .page-title-section h2 rimosso - gestito da .h2-section */
 
-.page-title-section p {
-    font-size: 18px;
-    line-height: 1.8;
-    color: #555;
-    max-width: 700px;
-    /* Limita la larghezza per una migliore leggibilità */
-    margin-left: auto;
-    margin-right: auto;
-}
+/* .page-title-section p rimosso - gestito da .p-main */
 
 /* Sezione Filosofia di Design */
 .philosophy-section {
@@ -1194,18 +1240,9 @@ hanno già un'animazione in ingresso*/
     margin-bottom: 60px;
 }
 
-.section-title h2 {
-    font-size: 2.25rem;
-    /* 36px */
-    margin-bottom: 15px;
-}
+/* .section-title h2 rimosso - gestito da .h2-section */
 
-.section-title p {
-    font-size: 16px;
-    color: #666;
-    max-width: 600px;
-    margin: 0 auto;
-}
+/* .section-title p rimosso - gestito da .p-main */
 
 .project-card {
     background-color: #ffffff;
@@ -1294,21 +1331,9 @@ hanno già un'animazione in ingresso*/
     flex: 1;
 }
 
-.about-text h2 {
-    font-size: 2.25rem;
-    /* 36px */
-    margin-bottom: 20px;
-}
+/* .about-text h2 rimosso - gestito da .h2-section */
 
-.about-text p {
-    color: #555;
-    line-height: 1.8;
-    margin-bottom: 20px;
-}
-
-.about-text .btn {
-    margin-top: 10px;
-}
+/* .about-text p rimosso - gestito da .p-main */
 
 .about-image .image-placeholder {
     height: 400px;
@@ -1393,36 +1418,15 @@ hanno già un'animazione in ingresso*/
     gap: 15px;
 }
 
-.cta-section h2 {
-    font-size: 2.25rem;
-    /* 36px */
-}
+/* .cta-section h2 rimosso - gestito da .h2-section */
 
-.cta-section p {
-    font-size: 18px;
-    color: #666;
-    max-width: 650px;
-    margin: 0 auto 40px auto;
-    line-height: 1.7;
-}
+/* .cta-section p rimosso - gestito da .p-main */
 
 /* --- Pagina Case Study: Hero --- */
 .case-study-hero {
     padding: 4rem 0;
     text-align: center;
     background-color: #fff;
-}
-
-.case-study-title h1 {
-    font-size: 48px;
-    margin-bottom: 15px;
-}
-
-.case-study-title p {
-    font-size: 18px;
-    color: #666;
-    max-width: 700px;
-    margin: 0 auto 50px auto;
 }
 
 .case-study-meta {
@@ -1490,16 +1494,9 @@ hanno già un'animazione in ingresso*/
 }
 
 /* Aggiunge un bordo sopra la prima sezione dopo l'hero */
-.project-content-section h2 {
-    font-size: 32px;
-    margin-bottom: 20px;
-}
+/* .project-content-section h2 rimosso - gestito da .h2-section */
 
-.project-content-section p {
-    font-size: 18px;
-    line-height: 1.7;
-    color: #555;
-}
+/* .project-content-section p rimosso - gestito da .p-main */
 
 .subsection-title {
     font-size: 24px;
@@ -1814,42 +1811,10 @@ blockquote {
     text-align: center;
 }
 
-.project-cta-section h2 {
-    font-size: 32px;
-    margin-bottom: 15px;
-}
+/* .project-cta-section h2 rimosso - gestito da .h2-section */
 
-.project-cta-section p {
-    font-size: 18px;
-    color: #a0a0a0;
-    /* Grigio chiaro per il sottotitolo */
-    margin-bottom: 40px;
-}
+/* .project-cta-section p rimosso - gestito da .p-main */
 
-/* Nuovi stili per i bottoni su sfondo scuro */
-.btn.btn-light-outline {
-    background-color: transparent;
-    color: #fff;
-    border: 1px solid #fff;
-    border-radius: 8px;
-}
-
-.btn.btn-light-outline:hover {
-    background-color: #fff;
-    color: #111;
-    border-color: #fff;
-}
-
-.btn.btn-light-solid {
-    background-color: #fff;
-    color: #111;
-    border-color: #fff;
-}
-
-.btn.btn-light-solid:hover {
-    background-color: #ddd;
-    border-color: #ddd;
-}
 
 #projects {
     scroll-margin-top: 70px;
@@ -1946,9 +1911,7 @@ blockquote {
     }
 
 
-    body.progetti-page .progetti-text h2 {
-        font-size: 2.4rem;
-    }
+    /* rimosso override mobile h2 progetti */
 
 
     .process-steps {
@@ -2036,10 +1999,7 @@ blockquote {
         margin: 0 auto;
     }
 
-    body.progetti-page .progetti-text h2 {
-        font-size: 2rem;
-        text-align: center;
-    }
+    /* rimosso override tiny mobile h2 progetti */
 
     body.progetti-page .progetti-cards {
         grid-template-columns: 1fr;
@@ -2148,14 +2108,12 @@ blockquote {
         align-items: stretch;
     }
 
-    nav .nav-cta {
+    nav .btn-primary {
         display: block;
         width: 90%;
         margin: 60px auto 0 auto;
         text-align: center;
         padding: 10px 0;
-        font-size: 16px;
-        border-radius: 8px;
     }
 
 
@@ -2237,19 +2195,7 @@ blockquote {
         min-height: 70vh;
     }
 
-    .hero-text p {
-        margin-left: auto;
-        margin-right: auto;
-        margin-bottom: 2.5rem;
-        /* Dà più aria sotto il testo prima dei bottoni */
-        line-height: 1.7;
-    }
-
-    #home-hero-title {
-        margin-bottom: 1.5rem;
-        /* Più aria sotto il titolo */
-        line-height: 1.3;
-    }
+    /* rimosso override mobile hero */
 
     .hero-buttons {
         display: flex;
@@ -2276,18 +2222,13 @@ blockquote {
         height: 280px;
     }
 
-    .hero-text h1,
-    #home-hero-title {
-        font-size: 40px;
-    }
+    /* rimosso override mobile hero h1 */
 
     .section-title p {
         margin: 0;
     }
 
-    .section-title h2 {
-        font-size: 32px;
-    }
+    /* rimosso override mobile h2 section */
 
 
 
@@ -2315,9 +2256,7 @@ blockquote {
         margin-bottom: 40px;
     }
 
-    .about-text h2 {
-        font-size: 32px;
-    }
+    /* rimosso override mobile h2 about */
 
     .process-steps {
         flex-direction: column;
@@ -2328,9 +2267,7 @@ blockquote {
         min-width: 300px;
     }
 
-    .cta-section h2 {
-        font-size: 30px;
-    }
+    /* rimosso override mobile cta */
 
     .cta-section p {
         font-size: 16px;
@@ -2358,11 +2295,7 @@ blockquote {
         text-align: left;
     }
 
-    .case-study-title h1 {
-        font-size: 32px;
-        line-height: 1.4;
-        font-weight: 450;
-    }
+    /* rimosso override mobile case study h1 */
 
     .research-cards-container {
         flex-direction: column;
