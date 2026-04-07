@@ -151,23 +151,26 @@ body.progetti-page.scroll-locked {
 /* Su mobile/tablet: scroll fluido con snap proximity per effetto feed */
 /* Su mobile/tablet: effetto Reel (snapping obbligatorio) */
 @media (max-width: 991px) {
-    html.progetti-page {
+    body.progetti-page {
+        /* Su mobile il body è il contenitore di snap */
         scroll-snap-type: y mandatory;
         overflow-x: hidden;
+        overflow-y: auto;
         height: 100%;
-    }
-    body.progetti-page {
-        /* Reset per display contents */
-        scroll-snap-type: none;
-        overflow: visible;
+        /* Safari iOS: mantiene lo scroll fluido nel contenitore di snap */
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior-y: contain;
     }
 
     body.progetti-page .snap-section {
         max-width: 100%;
         scroll-snap-align: start;
         height: 100vh;
+        /* iOS 16+: viewport stabile con URL bar dinamica */
+        height: 100svh;
         /* Fallback */
         height: 100dvh;
+        min-height: 100svh;
         min-height: 100dvh;
         scroll-snap-stop: always;
         /* Impedisce il salto di sezioni */
@@ -180,6 +183,7 @@ body.progetti-page.scroll-locked {
 
     body.progetti-page .snap-section.progetti-hero {
         height: 100vh;
+        height: 100svh;
         /* Fallback */
         height: 100dvh;
         max-height: none;
@@ -189,15 +193,32 @@ body.progetti-page.scroll-locked {
     body.progetti-page .snap-section.project-cta-section {
         scroll-snap-align: start;
         height: 100vh;
+        height: 100svh;
         /* Fallback */
         height: 100dvh;
     }
 
-    /* Rende le sezioni figli diretti del container di snap (html) per maggiore compatibilità mobile */
-    body.progetti-page,
+    /* Manteniamo il flow normale: display: contents può rompere lo snap su alcuni browser mobile */
     body.progetti-page main,
     body.progetti-page .snap-container {
-        display: contents;
+        display: block;
+    }
+}
+
+/* Touch devices (iOS/Android): snapping meno aggressivo, più fluido */
+@media (max-width: 991px) and (hover: none) and (pointer: coarse) {
+    body.progetti-page {
+        scroll-snap-type: y proximity;
+    }
+}
+
+/* Rifinitura iOS Safari: evita salti layout con notch / barre dinamiche */
+@supports (-webkit-touch-callout: none) {
+    @media (max-width: 991px) {
+        body.progetti-page .snap-section {
+            padding-top: max(1rem, env(safe-area-inset-top));
+            padding-bottom: max(1rem, env(safe-area-inset-bottom));
+        }
     }
 }
 
@@ -2055,80 +2076,6 @@ blockquote {
         display: flex;
         justify-content: center;
     }
-
-    /* Responsive per pagina progetti */
-    body.progetti-page .snap-section {
-        padding: 1rem 1rem;
-        height: auto;
-        /* Altezza dinamica per effetto feed */
-        scroll-snap-align: start;
-        scroll-snap-stop: always;
-        /* Forza stop su ogni sezione */
-    }
-
-    body.progetti-page .snap-section.progetti-hero {
-        height: 70vh;
-        max-height: 75vh;
-    }
-
-    /* Su mobile il gradiente è uguale per tutte le sezioni (normale e reverse) */
-    body.progetti-page .progetti-snap::before,
-    body.progetti-page .progetti-snap.reverse::before {
-        background: linear-gradient(180deg, rgba(0, 0, 0, 1.4) 0%, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0) 70%);
-    }
-
-    body.progetti-page .progetti-section,
-    body.progetti-page .progetti-snap.reverse .progetti-section {
-        grid-template-columns: 1fr;
-        justify-content: center;
-        gap: 1.5rem;
-    }
-
-    body.progetti-page .progetti-text,
-    body.progetti-page .progetti-snap.reverse .progetti-text {
-        grid-column: 1;
-        justify-self: center;
-        align-items: center;
-        text-align: center;
-        width: 100%;
-        max-width: 600px;
-        margin: 0 auto;
-    }
-
-    /* rimosso override tiny mobile h2 progetti */
-
-    body.progetti-page .progetti-cards {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto;
-        gap: 1rem;
-        max-width: 500px;
-        margin: 0 auto;
-    }
-
-    body.progetti-page .progetti-card:first-child {
-        grid-column: 1;
-    }
-
-    body.progetti-page .progetti-card {
-        padding: 1rem;
-        align-items: center;
-        text-align: center;
-    }
-
-    body.progetti-page .progetti-card .tag {
-        align-self: center;
-    }
-
-    body.progetti-page .progetti-card h4 {
-        font-size: 16px;
-    }
-
-    body.progetti-page .progetti-card p {
-        font-size: 13px;
-    }
-
-
-
 
     header nav ul.nav-active .mobile-logo-container {
         opacity: 1;
