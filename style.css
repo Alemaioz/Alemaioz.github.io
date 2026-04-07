@@ -65,9 +65,9 @@ h2 {
 
 /* --- H2 Per Lista Progetti (Scroll Page) --- */
 .h2-project-list {
-    font-size: 2rem;
-    /* Base Mobile */
-    line-height: 1.0;
+    font-size: 1.75rem;
+    /* Base Mobile più compatta per Reel */
+    line-height: 1.1;
     font-weight: 450;
     margin: 0;
 }
@@ -148,29 +148,42 @@ body.progetti-page.scroll-locked {
 }
 
 /* Su mobile/tablet: scroll fluido con snap proximity per effetto feed */
+/* Su mobile/tablet: effetto Reel (snapping obbligatorio) */
 @media (max-width: 991px) {
     body.progetti-page {
-        scroll-snap-type: y proximity;
+        scroll-snap-type: y mandatory;
+        overflow-x: hidden;
     }
 
     body.progetti-page .snap-section {
-        max-width: 1100px;
+        max-width: 100%;
         scroll-snap-align: start;
-        min-height: 100vh;
-        height: auto;
-        /* Altezza dinamica per effetto feed */
+        height: 100vh;
+        /* Fallback */
+        height: 100dvh;
+        min-height: 100dvh;
         scroll-snap-stop: always;
-        /* Forza stop su ogni sezione */
+        /* Impedisce il salto di sezioni */
+        padding: 0 1.25rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
 
     body.progetti-page .snap-section.progetti-hero {
-        height: 70vh;
-        max-height: 75vh;
+        height: 100vh;
+        /* Fallback */
+        height: 100dvh;
+        max-height: none;
     }
 
-    /* Escludi footer dallo snap su mobile/tablet */
+    /* Su mobile lo snap deve essere forzato ovunque per l'effetto reel */
     body.progetti-page .snap-section.project-cta-section {
-        scroll-snap-align: none;
+        scroll-snap-align: start;
+        height: 100vh;
+        /* Fallback */
+        height: 100dvh;
     }
 }
 
@@ -198,15 +211,28 @@ body.progetti-page .progetti-snap::before {
     content: '';
     position: absolute;
     inset: 0;
-    /* Normal: Scuro a sinistra, sfuma a destra per accogliere il testo a sinistra */
+    /* Desktop default: sfumatura orizzontale */
     background: linear-gradient(90deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.45) 35%, rgba(0, 0, 0, 0.1) 70%, rgba(0, 0, 0, 0) 100%);
     pointer-events: none;
     z-index: 1;
 }
 
+@media (max-width: 991px) {
+    body.progetti-page .progetti-snap::before {
+        /* Mobile: Overlay scuro uniforme per leggibilità testo bianco centrato */
+        background: rgba(0, 0, 0, 0.55);
+    }
+}
+
 body.progetti-page .progetti-snap.reverse::before {
-    /* Reverse: Scuro a destra, sfuma a sinistra per accogliere il testo a destra */
+    /* Reverse Desktop: Scuro a destra */
     background: linear-gradient(270deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.45) 35%, rgba(0, 0, 0, 0.1) 70%, rgba(0, 0, 0, 0) 100%);
+}
+
+@media (max-width: 991px) {
+    body.progetti-page .progetti-snap.reverse::before {
+        background: rgba(0, 0, 0, 0.55);
+    }
 }
 
 body.progetti-page .progetti-section {
@@ -216,17 +242,30 @@ body.progetti-page .progetti-section {
     width: 100%;
     margin: 0 auto;
     display: grid;
-    /* Normal Layout: Testo (4fr) a SX, Spazio (1fr) a DX */
+    /* Normal Layout Desktop: Testo a SX, Spazio a DX */
     grid-template-columns: minmax(360px, 4fr) 1fr;
     gap: 2.5rem;
     align-items: center;
     padding: 0;
-    padding-top: 2.5rem;
+}
+
+@media (max-width: 991px) {
+    body.progetti-page .progetti-section {
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding-top: 0;
+    }
 }
 
 body.progetti-page .progetti-snap.reverse .progetti-section {
-    /* Reverse Layout: Spazio (1fr) a SX, Testo (4fr) a DX */
+    /* Reverse Layout Desktop: Spazio a SX, Testo a DX */
     grid-template-columns: 1fr minmax(360px, 4fr);
+}
+
+@media (max-width: 991px) {
+    body.progetti-page .progetti-snap.reverse .progetti-section {
+        grid-template-columns: 1fr;
+    }
 }
 
 body.progetti-page .progetti-snap.reverse .progetti-text {
@@ -254,6 +293,21 @@ body.progetti-page .progetti-text {
     align-items: flex-start;
 }
 
+@media (max-width: 991px) {
+    body.progetti-page .progetti-text {
+        width: 100%;
+        align-items: center;
+        text-align: center;
+        gap: 1.5rem;
+    }
+
+    body.progetti-page .progetti-snap.reverse .progetti-text {
+        grid-column: 1;
+        align-items: center;
+        text-align: center;
+    }
+}
+
 body.progetti-page .progetti-cards {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -262,8 +316,22 @@ body.progetti-page .progetti-cards {
     width: 100%;
 }
 
+@media (max-width: 991px) {
+    body.progetti-page .progetti-cards {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+        /* Riduciamo il gap su mobile per risparmiare spazio */
+    }
+}
+
 body.progetti-page .progetti-card:first-child {
     grid-column: 1 / span 2;
+}
+
+@media (max-width: 991px) {
+    body.progetti-page .progetti-card:first-child {
+        grid-column: 1;
+    }
 }
 
 body.progetti-page .progetti-card {
@@ -272,13 +340,22 @@ body.progetti-page .progetti-card {
     border-radius: 18px;
     padding: 1.6rem;
     backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
     align-items: flex-start;
     text-align: left;
-    /* Forza il testo a sinistra anche se il padre è allineato a destra */
+}
+
+@media (max-width: 991px) {
+    body.progetti-page .progetti-card {
+        padding: 1rem;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.08);
+        /* Leggermente più trasparente su mobile */
+    }
 }
 
 body.progetti-page .progetti-card h4 {
@@ -749,9 +826,11 @@ nav a:hover {
 
 /* -- Secondary Button -- */
 .btn-secondary {
-    background-color: transparent;
+    background-color: rgba(255, 255, 255, 0.01);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
     color: #333;
-    border: 1px solid rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(0, 0, 0, 0.12);
 }
 
 /* -- Light Buttons (For dark backgrounds) -- */
@@ -762,9 +841,11 @@ nav a:hover {
 }
 
 .btn-light-outline {
-    background-color: transparent;
+    background-color: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     color: #fff;
-    border: 1px solid #fff;
+    border: 1px solid rgba(255, 255, 255, 0.4);
 }
 
 /* --- LE MIE CTA (Desktop Enhancements) --- */
@@ -784,8 +865,9 @@ nav a:hover {
 
     .btn-secondary:hover {
         color: #000;
-        border-color: rgba(0, 0, 0, 0.3);
-        background-color: rgba(0, 0, 0, 0.08);
+        border-color: rgba(0, 0, 0, 0.25);
+        background-color: rgba(255, 255, 255, 0.3);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
     }
 
     .btn-light-solid:hover {
