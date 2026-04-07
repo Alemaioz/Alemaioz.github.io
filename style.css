@@ -138,6 +138,8 @@ h2 {
 
 body.progetti-page {
     scroll-behavior: smooth;
+    /* Tiene conto dell'header sticky durante lo snapping */
+    scroll-padding-top: 70px;
 }
 
 body.progetti-page:not(.scroll-locked) {
@@ -151,6 +153,7 @@ body.progetti-page.scroll-locked {
 /* Su mobile/tablet: scroll fluido con snap proximity per effetto feed */
 /* Su mobile/tablet: effetto Reel (snapping obbligatorio) */
 @media (max-width: 991px) {
+    html.progetti-page,
     body.progetti-page {
         /* Su mobile il body è il contenitore di snap */
         scroll-snap-type: y mandatory;
@@ -209,6 +212,11 @@ body.progetti-page.scroll-locked {
 @media (max-width: 991px) and (hover: none) and (pointer: coarse) {
     body.progetti-page {
         scroll-snap-type: y proximity;
+    }
+
+    /* Android/Samsung Internet: evita blocchi quando il contenuto eccede una schermata */
+    body.progetti-page .snap-section {
+        scroll-snap-stop: normal;
     }
 }
 
