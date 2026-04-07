@@ -10,6 +10,12 @@
 /* STILI GENERALI E GLOBALI */
 /* ======================== */
 
+:root {
+    --mobile-vv-height: 100vh;
+    --mobile-header-height: 70px;
+    --mobile-content-height: calc(100vh - 70px);
+}
+
 body {
     font-family: 'Google Sans Flex', sans-serif;
     background-color: #f8f9fa;
@@ -165,16 +171,16 @@ body.progetti-page.scroll-locked {
         overscroll-behavior-y: contain;
     }
 
+    body.progetti-page {
+        --mobile-content-height: calc(var(--mobile-vv-height) - var(--mobile-header-height) - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+    }
+
     body.progetti-page .snap-section {
         max-width: 100%;
         scroll-snap-align: start;
-        height: 100vh;
-        /* iOS 16+: viewport stabile con URL bar dinamica */
-        height: 100svh;
-        /* Fallback */
-        height: 100dvh;
-        min-height: 100svh;
-        min-height: 100dvh;
+        /* Spazio visivo reale meno altezza navbar */
+        height: calc(var(--mobile-vv-height) - var(--mobile-header-height));
+        min-height: calc(var(--mobile-vv-height) - var(--mobile-header-height));
         scroll-snap-stop: always;
         /* Impedisce il salto di sezioni */
         padding: 0 1.25rem;
@@ -185,20 +191,34 @@ body.progetti-page.scroll-locked {
     }
 
     body.progetti-page .snap-section.progetti-hero {
-        height: 100vh;
-        height: 100svh;
-        /* Fallback */
-        height: 100dvh;
+        height: calc(var(--mobile-vv-height) - var(--mobile-header-height));
         max-height: none;
     }
 
-    /* Su mobile lo snap deve essere forzato ovunque per l'effetto reel */
+    /* Sezioni progetto: lo snap deve arrivare al centro del contenuto */
+    body.progetti-page .snap-section.progetti-snap {
+        scroll-snap-align: center;
+        scroll-snap-stop: always;
+    }
+
+    /* Centra il contenuto progetto nella porzione davvero visibile */
+    body.progetti-page .progetti-section,
+    body.progetti-page .progetti-snap.reverse .progetti-section {
+        min-height: var(--mobile-content-height);
+        align-content: center;
+    }
+
+    body.progetti-page .progetti-text,
+    body.progetti-page .progetti-snap.reverse .progetti-text {
+        min-height: var(--mobile-content-height);
+        justify-content: center;
+    }
+
+    /* Anche la CTA rientra nello snap (come richiesto) */
     body.progetti-page .snap-section.project-cta-section {
         scroll-snap-align: start;
-        height: 100vh;
-        height: 100svh;
-        /* Fallback */
-        height: 100dvh;
+        height: calc(var(--mobile-vv-height) - var(--mobile-header-height));
+        min-height: calc(var(--mobile-vv-height) - var(--mobile-header-height));
     }
 
     /* Manteniamo il flow normale: display: contents può rompere lo snap su alcuni browser mobile */
@@ -206,17 +226,40 @@ body.progetti-page.scroll-locked {
     body.progetti-page .snap-container {
         display: block;
     }
+
+    /* Consente di passare dalla CTA al footer senza rimbalzi */
+    body.progetti-page footer {
+        scroll-snap-align: start;
+        scroll-snap-stop: normal;
+    }
 }
 
 /* Touch devices (iOS/Android): snapping meno aggressivo, più fluido */
 @media (max-width: 991px) and (hover: none) and (pointer: coarse) {
     body.progetti-page {
-        scroll-snap-type: y proximity;
+        /* Snapping robusto: ogni sezione si riallinea correttamente */
+        scroll-snap-type: y mandatory;
     }
 
-    /* Android/Samsung Internet: evita blocchi quando il contenuto eccede una schermata */
-    body.progetti-page .snap-section {
+    /* Dopo la CTA, JS aggiunge questa classe per uscire dal feed */
+    html.progetti-page.feed-ended,
+    body.progetti-page.feed-ended {
+        scroll-snap-type: none;
+    }
+
+    /* Quando il feed è concluso, la CTA torna sezione "normale" */
+    body.progetti-page.feed-ended .snap-section.project-cta-section {
+        height: auto;
+        min-height: auto;
+        padding-top: 4rem;
+        padding-bottom: 4rem;
+        scroll-snap-align: none;
         scroll-snap-stop: normal;
+    }
+
+    /* Mantiene il centraggio consistente a ogni cambio sezione */
+    body.progetti-page .snap-section {
+        scroll-snap-stop: always;
     }
 }
 
@@ -250,12 +293,32 @@ body.progetti-page .progetti-snap {
     overflow: hidden;
 }
 
+/* Overlay particelle ambient (simile alla hero, ma più leggero) */
+/* Canvas fisico applicato al main della pagina progetti */
+body.progetti-page main {
+    position: relative;
+}
+
+#progetti-physics-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+body.progetti-page main > * {
+    position: relative;
+    z-index: 1;
+}
+
 body.progetti-page .progetti-snap::before {
     content: '';
     position: absolute;
     inset: 0;
     /* Desktop default: sfumatura orizzontale */
-    background: linear-gradient(90deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.45) 35%, rgba(0, 0, 0, 0.1) 70%, rgba(0, 0, 0, 0) 100%);
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0.84) 0%, rgba(0, 0, 0, 0.62) 35%, rgba(0, 0, 0, 0.26) 70%, rgba(0, 0, 0, 0.06) 100%);
     pointer-events: none;
     z-index: 1;
 }
@@ -263,18 +326,18 @@ body.progetti-page .progetti-snap::before {
 @media (max-width: 991px) {
     body.progetti-page .progetti-snap::before {
         /* Mobile: Overlay scuro uniforme per leggibilità testo bianco centrato */
-        background: rgba(0, 0, 0, 0.55);
+        background: rgba(0, 0, 0, 0.68);
     }
 }
 
 body.progetti-page .progetti-snap.reverse::before {
     /* Reverse Desktop: Scuro a destra */
-    background: linear-gradient(270deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.45) 35%, rgba(0, 0, 0, 0.1) 70%, rgba(0, 0, 0, 0) 100%);
+    background: linear-gradient(270deg, rgba(0, 0, 0, 0.84) 0%, rgba(0, 0, 0, 0.62) 35%, rgba(0, 0, 0, 0.26) 70%, rgba(0, 0, 0, 0.06) 100%);
 }
 
 @media (max-width: 991px) {
     body.progetti-page .progetti-snap.reverse::before {
-        background: rgba(0, 0, 0, 0.55);
+        background: rgba(0, 0, 0, 0.68);
     }
 }
 
@@ -295,7 +358,7 @@ body.progetti-page .progetti-section {
 @media (max-width: 991px) {
     body.progetti-page .progetti-section {
         grid-template-columns: 1fr;
-        text-align: center;
+        text-align: left;
         padding-top: 0;
     }
 }
@@ -339,15 +402,15 @@ body.progetti-page .progetti-text {
 @media (max-width: 991px) {
     body.progetti-page .progetti-text {
         width: 100%;
-        align-items: center;
-        text-align: center;
+        align-items: flex-start;
+        text-align: left;
         gap: 1.5rem;
     }
 
     body.progetti-page .progetti-snap.reverse .progetti-text {
         grid-column: 1;
-        align-items: center;
-        text-align: center;
+        align-items: flex-start;
+        text-align: left;
     }
 }
 
@@ -355,15 +418,89 @@ body.progetti-page .progetti-cards {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: auto auto;
-    gap: 1.5rem;
+    gap: 1rem;
     width: 100%;
 }
 
+/* Desktop: mockup box nascosto */
+body.progetti-page .progetti-mockup-mobile {
+    display: none;
+}
+
+body.progetti-page .progetti-key-tags {
+    display: none;
+}
+
 @media (max-width: 991px) {
+    /* Preview layout: rimuove sfondi immagine delle sezioni progetto */
+    body.progetti-page .progetti-snap,
+    body.progetti-page .progetti-snap.reverse {
+        background-image: none !important;
+    }
+
+    body.progetti-page .progetti-snap::before,
+    body.progetti-page .progetti-snap.reverse::before {
+        display: none;
+    }
+
+    /* Palette testi scura */
+    body.progetti-page .progetti-text,
+    body.progetti-page .progetti-snap.reverse .progetti-text,
+    body.progetti-page .h2-project-list {
+        color: #111;
+    }
+
+    body.progetti-page .progetti-card h4 {
+        color: #111;
+    }
+
+    body.progetti-page .progetti-card p,
+    body.progetti-page .progetti-card .tag {
+        color: #4a4a4a;
+    }
+
+    body.progetti-page .progetti-mockup-mobile {
+        display: block;
+        width: 100%;
+        height: clamp(190px, 28vh, 280px);
+        border-radius: 16px;
+        overflow: hidden;
+        border: 1px solid rgba(114, 114, 114, 0.11);
+        background: #fff;
+    }
+
+    body.progetti-page .progetti-mockup-mobile img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        background-color: #fff;
+        display: block;
+    }
+
     body.progetti-page .progetti-cards {
-        grid-template-columns: 1fr;
-        gap: 0.75rem;
-        /* Riduciamo il gap su mobile per risparmiare spazio */
+        display: none;
+    }
+
+    body.progetti-page .progetti-card:first-child {
+        grid-column: 1;
+    }
+
+    body.progetti-page .progetti-key-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.45rem;
+    }
+
+    body.progetti-page .progetti-key-tags .tag {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.35rem 0.65rem;
+        border-radius: 999px;
+        font-size: 0.75rem;
+        line-height: 1;
+        color: #4a4a4a;
+        background: #e7e7e7;
+        border: 1px solid #d3d3d3;
     }
 }
 
@@ -373,7 +510,7 @@ body.progetti-page .progetti-card:first-child {
 
 @media (max-width: 991px) {
     body.progetti-page .progetti-card:first-child {
-        grid-column: 1;
+        grid-column: 1 / -1;
     }
 }
 
@@ -394,10 +531,34 @@ body.progetti-page .progetti-card {
 
 @media (max-width: 991px) {
     body.progetti-page .progetti-card {
-        padding: 1rem;
-        border-radius: 14px;
-        background: rgba(255, 255, 255, 0.08);
-        /* Leggermente più trasparente su mobile */
+        padding: 0.75rem 1rem;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.1);
+        align-items: flex-start;
+        text-align: left;
+        gap: 0.5rem;
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.16);
+    }
+
+    /* Specifiche richieste: 16px titolo, 14px descrizione (in rem) */
+    body.progetti-page .progetti-card h4 {
+        font-size: 1rem;
+        line-height: 1.2;
+    }
+
+    body.progetti-page .progetti-card p {
+        font-size: 0.875rem;
+        line-height: 1.35;
+        line-clamp: 2;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    /* Su mobile i tag non vengono mostrati */
+    body.progetti-page .progetti-card .tag {
+        display: none;
     }
 }
 
@@ -408,7 +569,7 @@ body.progetti-page .progetti-card h4 {
 
 body.progetti-page .progetti-card p {
     margin: 0;
-    font-size: 14px;
+    font-size: 1rem;
     color: rgba(255, 255, 255, 0.85);
     line-height: 1.5;
 }
@@ -416,7 +577,7 @@ body.progetti-page .progetti-card p {
 body.progetti-page .progetti-card .tag {
     align-self: flex-start;
     padding: 6px 12px;
-    font-size: 12px;
+    font-size: 0.875rem;
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.18);
     border: 1px solid rgba(255, 255, 255, 0.25);
@@ -719,6 +880,7 @@ header:hover {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
     transition: background-color 0.6s, box-shadow 1s, backdrop-filter 0.6s;
 }
+
 
 /*L'ombra sotto l'header*/
 header::after {
@@ -2026,15 +2188,10 @@ blockquote {
 
 
     body.progetti-page .progetti-cards {
-        gap: 1rem;
+        gap: 0.5rem;
         max-width: 600px;
         margin: 0;
     }
-
-    body.progetti-page .progetti-card {
-        padding: 1.2rem;
-    }
-
 
     /* rimosso override mobile h2 progetti */
 

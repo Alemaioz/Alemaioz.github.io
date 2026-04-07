@@ -16,6 +16,29 @@ window.addEventListener('load', function() {
     });
 });
 
+// Viewport mobile reale (considera barra indirizzi) + altezza header
+// per centrare correttamente le sezioni rispetto allo spazio visibile.
+function updateMobileViewportVars() {
+    const root = document.documentElement;
+    const header = document.querySelector('header');
+    const vv = window.visualViewport;
+    const viewportHeight = vv ? vv.height : window.innerHeight;
+    const headerHeight = header ? header.getBoundingClientRect().height : 70;
+
+    root.style.setProperty('--mobile-vv-height', `${viewportHeight}px`);
+    root.style.setProperty('--mobile-header-height', `${headerHeight}px`);
+}
+
+window.addEventListener('resize', updateMobileViewportVars, { passive: true });
+window.addEventListener('orientationchange', updateMobileViewportVars, { passive: true });
+window.addEventListener('scroll', updateMobileViewportVars, { passive: true });
+if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', updateMobileViewportVars, { passive: true });
+    window.visualViewport.addEventListener('scroll', updateMobileViewportVars, { passive: true });
+}
+document.addEventListener('DOMContentLoaded', updateMobileViewportVars);
+window.addEventListener('load', updateMobileViewportVars);
+
 //HAMBURGHER MENU//
 
 // Aspetta che tutto il contenuto della pagina sia caricato
@@ -115,14 +138,67 @@ window.addEventListener('scroll', function() {
 */
 
 //HEADER CHE DIVENTA OPACO AL PASSAGGIO DEL MOUSE E ALLO SCROLL//
-window.addEventListener('scroll', function() {
+function updateNavbarScrolledState() {
     const header = document.querySelector('header');
-    if (window.scrollY > 80) {
+    if (!header) return;
+
+    const scrollRoot = document.scrollingElement || document.documentElement;
+    const y = window.scrollY || scrollRoot.scrollTop || document.body.scrollTop || 0;
+    const isProgettiMobile = document.body.classList.contains('progetti-page') && window.innerWidth <= 991;
+    let isAtTop = y <= 8;
+
+    if (isProgettiMobile) {
+        const heroSection = document.querySelector('.progetti-hero');
+        const headerHeight = header.getBoundingClientRect().height || 70;
+        if (heroSection) {
+            const heroRect = heroSection.getBoundingClientRect();
+            // "Top reale" solo quando la hero è ancora ben visibile sotto la navbar.
+            const heroStillAtTop = heroRect.top >= -8 && heroRect.bottom > headerHeight + 24;
+            isAtTop = isAtTop && heroStillAtTop;
+        }
+    }
+
+    // Base solo quando siamo davvero in cima alla pagina.
+    if (!isAtTop) {
         header.classList.add('navbar-scrolled');
     } else {
         header.classList.remove('navbar-scrolled');
     }
-});
+}
+
+window.addEventListener('scroll', updateNavbarScrolledState, { passive: true });
+updateNavbarScrolledState();
+
+// Fix mirato: su mobile + pagina progetti alcuni browser (es. Samsung Internet)
+// possono non aggiornare in modo affidabile window.scrollY.
+if (document.body.classList.contains('progetti-page') && window.innerWidth <= 991) {
+    const scrollTarget = document.scrollingElement || document.documentElement || document.body;
+    scrollTarget.addEventListener('scroll', updateNavbarScrolledState, { passive: true });
+    document.body.addEventListener('scroll', updateNavbarScrolledState, { passive: true });
+    document.documentElement.addEventListener('scroll', updateNavbarScrolledState, { passive: true });
+}
+
+// Uscita dal feed su mobile (solo pagina Progetti):
+// CTA entra nello snap, ma dopo averla raggiunta si disattiva lo snap
+// per consentire lo scroll normale verso il footer/resto pagina.
+if (document.body.classList.contains('progetti-page') && window.innerWidth <= 991) {
+    const ctaSection = document.querySelector('.project-cta-section');
+    const body = document.body;
+    const html = document.documentElement;
+    const updateFeedExitState = () => {
+        if (!ctaSection) return;
+        const ctaRect = ctaSection.getBoundingClientRect();
+        const hasReachedCta = ctaRect.top <= 100;
+        body.classList.toggle('feed-ended', hasReachedCta);
+        html.classList.toggle('feed-ended', hasReachedCta);
+    };
+
+    window.addEventListener('scroll', updateFeedExitState, { passive: true });
+    (document.scrollingElement || document.documentElement || document.body)
+        .addEventListener('scroll', updateFeedExitState, { passive: true });
+    window.addEventListener('resize', updateFeedExitState, { passive: true });
+    updateFeedExitState();
+}
 
 
 // INTESTAZIONE HERO GRADIENT AL PASSAGGIO DEL MOUSE//
@@ -186,6 +262,7 @@ function requestTick() {
         ticking = true;
     }
 }
+
 
 // Inizializza le animazioni quando il DOM è caricato
 document.addEventListener('DOMContentLoaded', () => {
