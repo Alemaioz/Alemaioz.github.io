@@ -21,6 +21,7 @@ body {
 
 html {
     scroll-behavior: smooth;
+    scrollbar-gutter: stable;
 }
 
 h1,
@@ -144,15 +145,21 @@ body.progetti-page:not(.scroll-locked) {
 }
 
 body.progetti-page.scroll-locked {
-    overflow: hidden;
+    overflow-y: scroll;
 }
 
 /* Su mobile/tablet: scroll fluido con snap proximity per effetto feed */
 /* Su mobile/tablet: effetto Reel (snapping obbligatorio) */
 @media (max-width: 991px) {
-    body.progetti-page {
+    html.progetti-page {
         scroll-snap-type: y mandatory;
         overflow-x: hidden;
+        height: 100%;
+    }
+    body.progetti-page {
+        /* Reset per display contents */
+        scroll-snap-type: none;
+        overflow: visible;
     }
 
     body.progetti-page .snap-section {
@@ -184,6 +191,13 @@ body.progetti-page.scroll-locked {
         height: 100vh;
         /* Fallback */
         height: 100dvh;
+    }
+
+    /* Rende le sezioni figli diretti del container di snap (html) per maggiore compatibilità mobile */
+    body.progetti-page,
+    body.progetti-page main,
+    body.progetti-page .snap-container {
+        display: contents;
     }
 }
 
