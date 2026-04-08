@@ -12,8 +12,14 @@
 
 :root {
     --mobile-vv-height: 100vh;
-    --mobile-header-height: 70px;
-    --mobile-content-height: calc(100vh - 70px);
+    --mobile-header-height: 4.375rem;
+    --mobile-content-height: calc(100vh - 4.375rem);
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
 }
 
 body {
@@ -28,6 +34,8 @@ body {
 html {
     scroll-behavior: smooth;
     scrollbar-gutter: stable;
+    width: 100%;
+    overflow-x: hidden;
 }
 
 h1,
@@ -72,9 +80,8 @@ h2 {
 
 /* --- H2 Per Lista Progetti (Scroll Page) --- */
 .h2-project-list {
-    font-size: 1.75rem;
-    /* Base Mobile più compatta per Reel */
-    line-height: 1.1;
+    font-size: 1.25rem;
+    line-height: 1.4;
     font-weight: 450;
     margin: 0;
 }
@@ -109,11 +116,10 @@ h2 {
 
     .h2-section {
         font-size: 2.25rem;
-        /* ~36px */
     }
 
     .h2-project-home {
-        font-size: 28px;
+        font-size: 1.75rem;
     }
 
     .h2-project-list {
@@ -145,7 +151,7 @@ h2 {
 body.progetti-page {
     scroll-behavior: smooth;
     /* Tiene conto dell'header sticky durante lo snapping */
-    scroll-padding-top: 70px;
+    scroll-padding-top: var(--mobile-header-height);
 }
 
 body.progetti-page:not(.scroll-locked) {
@@ -195,23 +201,30 @@ body.progetti-page.scroll-locked {
         max-height: none;
     }
 
-    /* Sezioni progetto: lo snap deve arrivare al centro del contenuto */
+    /* Sezioni progetto: contenuto ancorato in alto sotto la navbar */
     body.progetti-page .snap-section.progetti-snap {
-        scroll-snap-align: center;
+        scroll-snap-align: start;
         scroll-snap-stop: always;
+        justify-content: flex-start;
+        align-items: stretch;
+        overflow-y: hidden;
+        padding-top: calc(3rem + env(safe-area-inset-top, 0px));
+        padding-bottom: max(1.1rem, env(safe-area-inset-bottom));
     }
 
-    /* Centra il contenuto progetto nella porzione davvero visibile */
+    /* Niente centratura verticale sul blocco progetto */
     body.progetti-page .progetti-section,
     body.progetti-page .progetti-snap.reverse .progetti-section {
-        min-height: var(--mobile-content-height);
-        align-content: center;
+        min-height: auto;
+        height: auto;
+        align-content: start;
     }
 
     body.progetti-page .progetti-text,
     body.progetti-page .progetti-snap.reverse .progetti-text {
-        min-height: var(--mobile-content-height);
-        justify-content: center;
+        min-height: auto;
+        justify-content: flex-start;
+        gap: clamp(0.9rem, 2.5vh, 1.3rem);
     }
 
     /* Anche la CTA rientra nello snap (come richiesto) */
@@ -404,7 +417,7 @@ body.progetti-page .progetti-text {
         width: 100%;
         align-items: flex-start;
         text-align: left;
-        gap: 1.5rem;
+        gap: 1rem;
     }
 
     body.progetti-page .progetti-snap.reverse .progetti-text {
@@ -428,6 +441,10 @@ body.progetti-page .progetti-mockup-mobile {
 }
 
 body.progetti-page .progetti-key-tags {
+    display: none;
+}
+
+body.progetti-page .progetti-mobile-teaser {
     display: none;
 }
 
@@ -462,8 +479,8 @@ body.progetti-page .progetti-key-tags {
     body.progetti-page .progetti-mockup-mobile {
         display: block;
         width: 100%;
-        height: clamp(190px, 28vh, 280px);
-        border-radius: 16px;
+        height: clamp(11.875rem, 28vh, 17.5rem);
+        border-radius: 1rem;
         overflow: hidden;
         border: 1px solid rgba(114, 114, 114, 0.11);
         background: #fff;
@@ -502,6 +519,19 @@ body.progetti-page .progetti-key-tags {
         background: #e7e7e7;
         border: 1px solid #d3d3d3;
     }
+
+    body.progetti-page .progetti-mobile-teaser {
+        display: block;
+        margin: 0;
+        font-size: 0.98rem;
+        line-height: 1.5;
+        color: #2f2f2f;
+        max-width: 62ch;
+    }
+
+    body.progetti-page .progetti-text > .btn {
+        margin-top: 0;
+    }
 }
 
 body.progetti-page .progetti-card:first-child {
@@ -517,7 +547,7 @@ body.progetti-page .progetti-card:first-child {
 body.progetti-page .progetti-card {
     background: rgba(255, 255, 255, 0.12);
     border: 1px solid rgba(255, 255, 255, 0.18);
-    border-radius: 18px;
+    border-radius: 1.125rem;
     padding: 1.6rem;
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
@@ -564,7 +594,7 @@ body.progetti-page .progetti-card {
 
 body.progetti-page .progetti-card h4 {
     margin: 0;
-    font-size: 18px;
+    font-size: 1.125rem;
 }
 
 body.progetti-page .progetti-card p {
@@ -576,7 +606,7 @@ body.progetti-page .progetti-card p {
 
 body.progetti-page .progetti-card .tag {
     align-self: flex-start;
-    padding: 6px 12px;
+    padding: 0.375rem 0.75rem;
     font-size: 0.875rem;
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.18);
@@ -596,7 +626,7 @@ body.progetti-page .project-image {
 }
 
 body.progetti-page .project-image img {
-    max-width: 420px;
+    max-width: 26.25rem;
     width: 100%;
     height: auto;
     transform: translateY(0);
@@ -604,14 +634,15 @@ body.progetti-page .project-image img {
 }
 
 body.progetti-page .project-image img:hover {
-    transform: translateY(-8px);
+    transform: translateY(-0.5rem);
 }
 
 body.progetti-page .snap-section.progetti-hero {
     justify-content: center;
     align-items: center;
-    height: 70vh;
-    max-height: 75vh;
+    height: calc(100vh - var(--mobile-header-height));
+    min-height: calc(100vh - var(--mobile-header-height));
+    max-height: calc(100vh - var(--mobile-header-height));
     text-align: center;
 }
 
@@ -620,39 +651,99 @@ body.progetti-page .progetti-hero .container-narrow {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 1rem;
+    gap: 0.35rem;
+}
+
+body.progetti-page .progetti-hero .h1-hero {
+    margin-bottom: 0.5rem;
+}
+
+body.progetti-page .progetti-hero .p-main {
+    margin-bottom: 0;
 }
 
 body.progetti-page .scroll-indicator {
-    margin-top: 2rem;
-    font-size: 2rem;
-    opacity: 0.6;
-    animation: bounce 1.8s infinite;
+    --indicator-size: 3.125rem;
+    margin-top: 6rem;
+    width: var(--indicator-size);
+    height: var(--indicator-size);
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    font-size: 0;
+    color: transparent;
+    border: 1px solid rgba(17, 17, 17, 0.14);
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+    animation: indicatorFloat 2.2s ease-in-out infinite;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+body.progetti-page .scroll-indicator::before {
+    content: '';
+    width: 0.5rem;
+    height: 0.5rem;
+    border-right: 2px solid #333333;
+    border-bottom: 2px solid #333333;
+    transform: rotate(45deg) translateY(-1px);
+    opacity: 0.88;
+    animation: indicatorChevron 2.2s ease-in-out infinite;
+}
+
+body.progetti-page .scroll-indicator::after {
+    content: '';
+    position: absolute;
+    inset: -0.375rem;
+    border-radius: inherit;
+    border: 1px solid rgba(17, 17, 17, 0.12);
+    opacity: 0;
+    animation: indicatorPulse 2.2s ease-in-out infinite;
 }
 
 body.progetti-page .sublead {
     margin-top: 1rem;
     opacity: 0.75;
-    max-width: 450px;
+    max-width: 28.125rem;
     line-height: 1.5;
 }
 
-@keyframes bounce {
-
-    0%,
-    20%,
-    50%,
-    80%,
-    100% {
+@keyframes indicatorFloat {
+    0%, 100% {
         transform: translateY(0);
     }
-
-    40% {
-        transform: translateY(-20px);
+    50% {
+        transform: translateY(0.35rem);
     }
+}
 
-    60% {
-        transform: translateY(-10px);
+@keyframes indicatorChevron {
+    0%, 100% {
+        transform: rotate(45deg) translate(0, -1px);
+        opacity: 0.75;
+    }
+    50% {
+        transform: rotate(45deg) translate(2px, 4px);
+        opacity: 1;
+    }
+}
+
+@keyframes indicatorPulse {
+    0% {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    45% {
+        opacity: 0.35;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1.1);
     }
 }
 
@@ -1524,7 +1615,6 @@ hanno già un'animazione in ingresso*/
 
 .section-title {
     text-align: center;
-    margin-bottom: 60px;
 }
 
 /* .section-title h2 rimosso - gestito da .h2-section */
