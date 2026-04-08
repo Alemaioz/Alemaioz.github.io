@@ -263,9 +263,27 @@ function requestTick() {
     }
 }
 
+function applyMobileFadeCascade() {
+    const isMobile = window.innerWidth <= 991;
+    const isProgettiPage = document.body.classList.contains('progetti-page');
+    const animatedElements = document.querySelectorAll('.scroll-animate');
+
+    animatedElements.forEach((element, index) => {
+        if (isMobile && !isProgettiPage) {
+            const step = 0.06;
+            const maxDelay = 0.42;
+            const delay = Math.min((index % 8) * step, maxDelay);
+            element.style.transitionDelay = `${delay}s`;
+        } else {
+            element.style.transitionDelay = '';
+        }
+    });
+}
+
 
 // Inizializza le animazioni quando il DOM è caricato
 document.addEventListener('DOMContentLoaded', () => {
+    applyMobileFadeCascade();
     // Gestisci le animazioni allo scroll
     handleScrollAnimations();
 
@@ -277,6 +295,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Gestisci anche il resize della finestra
     window.addEventListener('resize', () => {
+        applyMobileFadeCascade();
         handleScrollAnimations();
         initProgettiScrollLock();
     });

@@ -66,7 +66,7 @@
         [185, 185, 185]
     ];
 
-    const COUNT = window.innerWidth < 768 ? 42 : 64;
+    const COUNT = window.innerWidth < 768 ? 42 : 42;
 
     function createParticles() {
         const hero = document.querySelector('.progetti-hero');

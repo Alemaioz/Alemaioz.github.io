@@ -16,12 +16,6 @@
     --mobile-content-height: calc(100vh - 4.375rem);
 }
 
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
-}
-
 body {
     font-family: 'Google Sans Flex', sans-serif;
     background-color: #f8f9fa;
@@ -34,8 +28,6 @@ body {
 html {
     scroll-behavior: smooth;
     scrollbar-gutter: stable;
-    width: 100%;
-    overflow-x: hidden;
 }
 
 h1,
@@ -680,8 +672,6 @@ body.progetti-page .scroll-indicator {
     -webkit-backdrop-filter: blur(10px);
     box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
     animation: indicatorFloat 2.2s ease-in-out infinite;
-    cursor: pointer;
-    text-decoration: none;
 }
 
 body.progetti-page .scroll-indicator::before {
@@ -2680,6 +2670,19 @@ blockquote {
 
 .scroll-animate.slide-right.animate-in {
     transform: translateX(0);
+}
+
+/* Mobile (esclusa pagina Progetti): niente ingressi laterali, solo fade-in morbido */
+@media (max-width: 991px) {
+    body:not(.progetti-page) .scroll-animate.slide-left,
+    body:not(.progetti-page) .scroll-animate.slide-right {
+        transform: translateY(1.25rem);
+    }
+
+    body:not(.progetti-page) .scroll-animate.slide-left.animate-in,
+    body:not(.progetti-page) .scroll-animate.slide-right.animate-in {
+        transform: translateY(0);
+    }
 }
 
 /* Delay per animazioni a cascata */
