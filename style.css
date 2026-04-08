@@ -6,6 +6,14 @@
     src: url('fonts/google-sans-flex-latin.woff2') format('woff2');
 }
 
+@font-face {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 400 700;
+    font-display: swap;
+    src: url('fonts/montserrat-latin.woff2') format('woff2');
+}
+
 /* ======================== */
 /* STILI GENERALI E GLOBALI */
 /* ======================== */
@@ -200,7 +208,7 @@ body.progetti-page.scroll-locked {
         justify-content: flex-start;
         align-items: stretch;
         overflow-y: hidden;
-        padding-top: calc(3rem + env(safe-area-inset-top, 0px));
+        padding-top: calc(3em + env(safe-area-inset-top, 0px));
         padding-bottom: max(1.1rem, env(safe-area-inset-bottom));
     }
 
@@ -637,6 +645,8 @@ body.progetti-page .snap-section.progetti-hero {
     height: calc(100vh - var(--mobile-header-height));
     min-height: calc(100vh - var(--mobile-header-height));
     max-height: calc(100vh - var(--mobile-header-height));
+    /* Solo prima sezione: raddoppia l'offset di scroll della navbar */
+    scroll-margin-top: var(--mobile-header-height);
     text-align: center;
 }
 
@@ -650,15 +660,17 @@ body.progetti-page .progetti-hero .container-narrow {
 
 body.progetti-page .progetti-hero .h1-hero {
     margin-bottom: 0.5rem;
+    transform: translateY(-2rem);
 }
 
 body.progetti-page .progetti-hero .p-main {
     margin-bottom: 0;
+    transform: translateY(-2rem);
 }
 
 body.progetti-page .scroll-indicator {
     --indicator-size: 3.125rem;
-    margin-top: 6rem;
+    margin-top: 8rem;
     width: var(--indicator-size);
     height: var(--indicator-size);
     border-radius: 999px;
@@ -799,13 +811,13 @@ body.progetti-page .sublead {
 
 .project-type {
     background-color: #e3f2fd;
-    color: #1976d2;
+    color: #0f4f93;
 }
 
 .project-duration {
     background-color: #f8f0ff;
     /* Versione molto chiara del viola del logo */
-    color: #b366ff;
+    color: #6a2faf;
     /* Versione più chiara del viola del logo */
 }
 

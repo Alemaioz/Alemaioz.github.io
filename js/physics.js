@@ -3,8 +3,36 @@
 // Usa Matter.js come motore fisico 2D
 
 (function () {
-    // Eseguito solo se Matter.js è disponibile e se la hero section esiste
-    if (typeof Matter === 'undefined') return;
+    const MATTER_LOCAL = 'js/vendor/matter.min.js';
+    const MATTER_CDN = 'https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js';
+
+    function loadMatter() {
+        if (window.Matter) return Promise.resolve(window.Matter);
+        if (window.__matterLoadingPromise) return window.__matterLoadingPromise;
+
+        window.__matterLoadingPromise = new Promise((resolve, reject) => {
+            const injectScript = (src, onError) => {
+                const existing = document.querySelector(`script[src="${src}"]`);
+                if (existing) {
+                    existing.addEventListener('load', () => resolve(window.Matter), { once: true });
+                    existing.addEventListener('error', onError, { once: true });
+                    return;
+                }
+                const script = document.createElement('script');
+                script.src = src;
+                script.async = true;
+                script.onload = () => resolve(window.Matter);
+                script.onerror = onError;
+                document.head.appendChild(script);
+            };
+
+            injectScript(MATTER_LOCAL, () => {
+                injectScript(MATTER_CDN, reject);
+            });
+        });
+
+        return window.__matterLoadingPromise;
+    }
 
     const heroEl = document.querySelector('.hero-section');
     if (!heroEl) return;
@@ -17,12 +45,9 @@
     const ctx = canvas.getContext('2d');
 
     // --- Matter.js ---
-    const { Engine, Bodies, Body, World } = Matter;
-
-    const engine = Engine.create();
-    engine.gravity.y = 0; // Antigravità: nessuna forza verso il basso
-    engine.gravity.x = 0;
-    const world = engine.world;
+    let Engine, Bodies, Body, World;
+    let engine;
+    let world;
 
     // --- Dimensioni ---
     let W = 0, H = 0;
@@ -237,15 +262,41 @@
 
     // --- Avvio ---
     function init() {
+        if (!Engine || !Bodies || !Body || !World) return;
+        engine = Engine.create();
+        engine.gravity.y = 0; // Antigravità: nessuna forza verso il basso
+        engine.gravity.x = 0;
+        world = engine.world;
+
         setSize();
         createWalls();
         createParticles();
         loop();
     }
 
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
-    } else {
+    async function startPhysicsWhenReady() {
+        const MatterLib = await loadMatter();
+        if (!MatterLib) return;
+        ({ Engine, Bodies, Body, World } = MatterLib);
         init();
+    }
+
+    function scheduleStart() {
+        const boot = () => {
+            startPhysicsWhenReady().catch(() => {
+                // Fail silent: la pagina resta funzionale anche senza effetto physics.
+            });
+        };
+        if ('requestIdleCallback' in window) {
+            window.requestIdleCallback(boot, { timeout: 1200 });
+        } else {
+            setTimeout(boot, 120);
+        }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', scheduleStart, { once: true });
+    } else {
+        scheduleStart();
     }
 })();
