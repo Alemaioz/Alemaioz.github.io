@@ -75,7 +75,7 @@ h2 {
     /* Base Mobile */
     line-height: 1.3;
     font-weight: 450;
-    margin-bottom: 15px;
+    margin-bottom: 0px;
 }
 
 /* --- H2 Per Lista Progetti (Scroll Page) --- */
@@ -440,6 +440,12 @@ body.progetti-page .progetti-mockup-mobile {
     display: none;
 }
 
+body.progetti-page .progetti-mockup-link {
+    display: block;
+    width: 100%;
+    text-decoration: none;
+}
+
 body.progetti-page .progetti-key-tags {
     display: none;
 }
@@ -680,22 +686,28 @@ body.progetti-page .scroll-indicator {
     position: relative;
     font-size: 0;
     color: transparent;
-    border: 1px solid rgba(17, 17, 17, 0.14);
-    background: rgba(255, 255, 255, 0.55);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(17, 17, 17, 0.1);
+    background: rgba(255, 255, 255, 0.64);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+    text-decoration: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
     animation: indicatorFloat 2.2s ease-in-out infinite;
 }
 
-body.progetti-page .scroll-indicator::before {
-    content: '';
-    width: 0.5rem;
-    height: 0.5rem;
-    border-right: 2px solid #333333;
-    border-bottom: 2px solid #333333;
-    transform: rotate(45deg) translateY(-1px);
-    opacity: 0.88;
+body.progetti-page .scroll-indicator .scroll-indicator-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    stroke: #2b2b2b;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+    opacity: 0.9;
     animation: indicatorChevron 2.2s ease-in-out infinite;
 }
 
@@ -707,6 +719,15 @@ body.progetti-page .scroll-indicator::after {
     border: 1px solid rgba(17, 17, 17, 0.12);
     opacity: 0;
     animation: indicatorPulse 2.2s ease-in-out infinite;
+}
+
+body.progetti-page .scroll-indicator:hover {
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
+}
+
+body.progetti-page .scroll-indicator:active {
+    transform: translateY(0.125rem);
 }
 
 body.progetti-page .sublead {
@@ -727,11 +748,11 @@ body.progetti-page .sublead {
 
 @keyframes indicatorChevron {
     0%, 100% {
-        transform: rotate(45deg) translate(0, -1px);
+        transform: translate(-50%, calc(-50% - 0.08rem));
         opacity: 0.75;
     }
     50% {
-        transform: rotate(45deg) translate(2px, 4px);
+        transform: translate(-50%, calc(-50% + 0.22rem));
         opacity: 1;
     }
 }
@@ -779,6 +800,12 @@ body.progetti-page .sublead {
 .project-image {
     justify-content: center;
     overflow: hidden;
+    width: 100%;
+    height: 100%;
+}
+
+.project-image-link {
+    display: block;
     width: 100%;
     height: 100%;
 }
@@ -1052,8 +1079,14 @@ nav a {
     transition: color 0.3s ease;
 }
 
-nav a:hover {
+nav a:not(.btn):hover {
     color: #000;
+}
+
+nav a.btn:hover,
+nav a.btn:active,
+nav a.btn:focus-visible {
+    color: #fff;
 }
 
 /* --- LE MIE CTA --- */
@@ -1065,7 +1098,7 @@ nav a:hover {
     padding: 10px 24px;
     border-radius: 999px;
     text-decoration: none;
-    font-size: 15px;
+    font-size: 1rem;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -1130,7 +1163,7 @@ nav a:hover {
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
     color: #333;
-    border: 1px solid rgba(0, 0, 0, 0.12);
+    border: 1px solid rgba(0, 0, 0, 0.22);
 }
 
 /* -- Light Buttons (For dark backgrounds) -- */
@@ -1141,9 +1174,9 @@ nav a:hover {
 }
 
 .btn-light-outline {
-    background-color: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    background-color: rgba(255, 255, 255, 0.01);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
     color: #fff;
     border: 1px solid rgba(255, 255, 255, 0.4);
 }
@@ -1477,9 +1510,15 @@ footer {
     margin-bottom: 0;
 }
 
-/*Una classe per ogni sezione con background*/
 .my-section-with-bg {
-    background-image: url('images/mesh_gradient_black.jpg');
+    background-size: cover;
+    /* L'immagine copre tutta la sezione */
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.contact-image-section {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('images/mesh_gradient_black.jpg');
     background-size: cover;
     /* L'immagine copre tutta la sezione */
     background-position: center;
@@ -2190,6 +2229,38 @@ blockquote {
     color: #fff;
     padding: 80px 0;
     text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+#progetti-cta-particles {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+body.progetti-page .project-cta-section .container-narrow {
+    position: relative;
+    z-index: 2;
+}
+
+/* Contenitore dedicato alla CTA finale della pagina progetti */
+body.progetti-page .project-cta-content {
+    padding: 0rem;
+    
+}
+
+body.progetti-page .project-cta-content .cta-buttons {
+    margin-top: 2rem;
+}
+
+@media (max-width: 768px) {
+    body.progetti-page .project-cta-content .cta-buttons {
+        gap: 0.75rem;
+    }
 }
 
 /* .project-cta-section h2 rimosso - gestito da .h2-section */
@@ -2315,6 +2386,13 @@ blockquote {
 
 @media (max-width: 768px) {
 
+    .btn {
+        font-size: 1rem;
+        padding: 10px 24px;
+        font-weight: 450;
+        line-height: 23px;
+    }
+
     .cta-buttons {
         display: flex;
         flex-direction: column;
@@ -2412,8 +2490,10 @@ blockquote {
 
     nav .btn-primary {
         display: block;
-        width: 90%;
-        margin: 60px auto 0 auto;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        margin: 0;
         text-align: center;
         padding: 10px 0;
     }
@@ -2438,7 +2518,7 @@ blockquote {
         clip-path: circle(0% at 90% 5%);
 
         /* TRANSIZIONE DI CHIUSURA */
-        transition: clip-path 0.4s ease-in-out 0.2s;
+        transition: clip-path 0.2s ease-in-out 0.2s;
     }
 
     /* Stile del menu (stato APERTO) */
@@ -2456,9 +2536,13 @@ blockquote {
         margin: 20px 0;
     }
 
+    header nav ul li:last-child {
+        width: 90%;
+        max-width: 22rem;
+        margin: 60px 0 0;
+    }
+
     header nav ul li a {
-        font-size: 20px;
-        font-weight: 600;
         opacity: 0;
         /* Stato iniziale: invisibili e spostati in basso */
         transform: translateY(15px);
@@ -2628,6 +2712,51 @@ blockquote {
     .contact-grid {
         grid-template-columns: 1fr;
         /* Una colonna su mobile */
+    }
+
+    .contact-options-section {
+        padding: 2.5rem 0;
+    }
+
+    .contact-card {
+        padding: 1.25rem;
+        border-radius: 0.875rem;
+        max-width: 22.5rem;
+        margin: 0 auto;
+    }
+
+    .contact-card-icon {
+        width: 3rem;
+        height: 3rem;
+        margin-bottom: 0.875rem;
+    }
+
+    .contact-card-icon svg {
+        width: 1.375rem;
+        height: 1.375rem;
+    }
+
+    .contact-card h3 {
+        font-size: 1.125rem;
+        margin-bottom: 0.625rem;
+    }
+
+    .contact-card p {
+        font-size: 0.9375rem;
+        line-height: 1.5;
+        margin-bottom: 1rem;
+    }
+
+    .contact-card .btn {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        align-self: stretch;
+        justify-content: center;
+        white-space: normal;
+        text-align: center;
+        padding: 0.5625rem 1rem;
+        font-size: 0.875rem;
     }
 
 }

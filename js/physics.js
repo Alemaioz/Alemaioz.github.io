@@ -125,8 +125,8 @@
 
             // Velocità iniziale casuale e lenta
             Body.setVelocity(body, {
-                x: (Math.random() - 0.5) * 1.4,
-                y: (Math.random() - 0.5) * 1.4
+                x: (Math.random() - 0.5) * (isMobileViewport ? 0.425 : 1.4),
+                y: (Math.random() - 0.5) * (isMobileViewport ? 0.425 : 1.4)
             });
 
             particles.push(body);
@@ -136,7 +136,11 @@
     }
 
     // --- Posizione mouse (relativa al canvas) ---
+    const isMobileViewport = window.matchMedia('(max-width: 991px)').matches;
     let mouse = { x: -9999, y: -9999 };
+    let lastMousePos = { x: -9999, y: -9999 };
+    let lastMouseMoveAt = 0;
+    const MOUSE_ACTIVE_MS = 140;
     const INFLUENCE_RADIUS = 500;     // Raggio di attrazione del mouse in px
     const ATTRACT_STRENGTH = 0.00001; // Intensità attrazione verso il mouse
 
@@ -144,6 +148,10 @@
         const rect = canvas.getBoundingClientRect();
         mouse.x = e.clientX - rect.left;
         mouse.y = e.clientY - rect.top;
+        const moved = Math.hypot(mouse.x - lastMousePos.x, mouse.y - lastMousePos.y) > 0.8;
+        if (moved) lastMouseMoveAt = performance.now();
+        lastMousePos.x = mouse.x;
+        lastMousePos.y = mouse.y;
     });
 
     document.addEventListener('mouseleave', () => {
@@ -162,46 +170,51 @@
             // Rinnova la direzione di deriva in modo sfalsato tra le particelle
             const driftFrame = Math.floor(i * DRIFT_CHANGE_FRAMES / PARTICLE_COUNT);
             if (frame % DRIFT_CHANGE_FRAMES === driftFrame % DRIFT_CHANGE_FRAMES) {
+                const mobileDriftFactor = isMobileViewport ? 0.3 : 1;
                 driftForces[i] = {
-                    x: (Math.random() - 0.5) * DRIFT_MAG * 2,
-                    y: (Math.random() - 0.5) * DRIFT_MAG * 2
+                    x: (Math.random() - 0.5) * DRIFT_MAG * 2 * mobileDriftFactor,
+                    y: (Math.random() - 0.5) * DRIFT_MAG * 2 * mobileDriftFactor
                 };
             }
 
             // Applica forza di deriva
             Body.applyForce(body, body.position, driftForces[i]);
 
-            // Attrazione e vortice del mouse
-            const dx = mouse.x - body.position.x;
-            const dy = mouse.y - body.position.y;
-            const dist2 = dx * dx + dy * dy;
-            const r2 = INFLUENCE_RADIUS * INFLUENCE_RADIUS;
+            // Attrazione e vortice del mouse (solo desktop)
+            const mouseIsActive = !isMobileViewport && (performance.now() - lastMouseMoveAt) <= MOUSE_ACTIVE_MS;
+            if (mouseIsActive) {
+                const dx = mouse.x - body.position.x;
+                const dy = mouse.y - body.position.y;
+                const dist2 = dx * dx + dy * dy;
+                const r2 = INFLUENCE_RADIUS * INFLUENCE_RADIUS;
 
-            if (dist2 < r2 && dist2 > 200) { // Almeno 10px di distanza per evitare scatti
-                const dist = Math.sqrt(dist2);
-                // Curva quadratica: la forza cresce più morbida avvicinandosi
-                const factor = Math.pow(1 - dist / INFLUENCE_RADIUS, 1.5);
+                if (dist2 < r2 && dist2 > 200) { // Almeno 10px di distanza per evitare scatti
+                    const dist = Math.sqrt(dist2);
+                    // Curva quadratica: la forza cresce più morbida avvicinandosi
+                    const factor = Math.pow(1 - dist / INFLUENCE_RADIUS, 1.5);
 
-                // Forza diretta verso il mouse
-                const forceX = (dx / dist) * ATTRACT_STRENGTH * factor;
-                const forceY = (dy / dist) * ATTRACT_STRENGTH * factor;
+                    // Forza diretta verso il mouse
+                    const forceX = (dx / dist) * ATTRACT_STRENGTH * factor;
+                    const forceY = (dy / dist) * ATTRACT_STRENGTH * factor;
 
-                // Forza tangenziale per creare un vortice (swirl) intorno al cursore
-                const swirlX = -forceY * 0.1; // Perpendicolare
-                const swirlY = forceX * 0.1;
+                    // Forza tangenziale per creare un vortice (swirl) intorno al cursore
+                    const swirlX = -forceY * 0.1; // Perpendicolare
+                    const swirlY = forceX * 0.1;
 
-                Body.applyForce(body, body.position, {
-                    x: forceX + swirlX,
-                    y: forceY + swirlY
-                });
+                    Body.applyForce(body, body.position, {
+                        x: forceX + swirlX,
+                        y: forceY + swirlY
+                    });
+                }
             }
 
             // Cap sulla velocità massima
             const spd = Math.sqrt(body.velocity.x ** 2 + body.velocity.y ** 2);
-            if (spd > MAX_SPEED) {
+            const maxSpeed = isMobileViewport ? 0.85 : MAX_SPEED;
+            if (spd > maxSpeed) {
                 Body.setVelocity(body, {
-                    x: (body.velocity.x / spd) * MAX_SPEED,
-                    y: (body.velocity.y / spd) * MAX_SPEED
+                    x: (body.velocity.x / spd) * maxSpeed,
+                    y: (body.velocity.y / spd) * maxSpeed
                 });
             }
         });

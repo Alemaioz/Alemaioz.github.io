@@ -33,7 +33,7 @@
                     <li><a href="index.html">Home</a></li>
                     <li><a href="progetti.html">Progetti</a></li>
                     <li><a href="aboutme.html">Chi sono</a></li>
-                    <a href="contact.html" class="btn btn-primary">Contattami</a>
+                    <li><a href="contact.html" class="btn btn-primary">Contattami</a></li>
                 </ul>
             </nav>
 
@@ -57,22 +57,28 @@
                 <p class="p-main">
                     Scorri per scoprire i miei progetti
                 </p>
-                <div class="scroll-indicator" aria-hidden="true">↓</div>
+                <a class="scroll-indicator" href="#progetto-1" aria-label="Vai al primo progetto">
+                    <svg class="scroll-indicator-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M7.5 10.5L12 15l4.5-4.5"></path>
+                    </svg>
+                </a>
             </div>
         </section>
 
         <!-- Sezioni scorrevoli (blocca lo scroll con JS) -->
         <div class="snap-container" id="progetti-snap">
 
-            <section class="snap-section progetti-snap" data-section="0"
+            <section id="progetto-1" class="snap-section progetti-snap" data-section="0"
                 style="background-image: url('images/mockup-progetti-teatrobasilica.webp');">
                 <div class="progetti-section">
                     <div class="progetti-text" data-parallax-speed="0.6">
 
                         <h2 class="h2-project-list">Teatro Basilica — UX accessibile</h2>
-                        <div class="progetti-mockup-mobile" aria-hidden="true">
-                            <img src="images/mockup-progetti-teatrobasilica.webp" alt="">
-                        </div>
+                        <a href="case-study-teatro-basilica.html" class="progetti-mockup-link" aria-label="Apri il case study Teatro Basilica">
+                            <div class="progetti-mockup-mobile">
+                                <img src="images/mockup-progetti-teatrobasilica.webp" alt="Anteprima progetto Teatro Basilica">
+                            </div>
+                        </a>
                         <div class="progetti-key-tags" aria-label="Punti chiave progetto">
                             <span class="tag">User Research</span>
                             <span class="tag">Prototipazione</span>
@@ -107,9 +113,11 @@
                     <div class="progetti-text" data-parallax-speed="0.6">
 
                         <h2 class="h2-project-list">MotorVip — UX Concept & Design Proposal</h2>
-                        <div class="progetti-mockup-mobile" aria-hidden="true">
-                            <img src="images/mockup-progetti-motorvip2.png" alt="">
-                        </div>
+                        <a href="case-study-concessionario-moto.html" class="progetti-mockup-link" aria-label="Apri il case study MotorVip">
+                            <div class="progetti-mockup-mobile">
+                                <img src="images/mockup-progetti-motorvip2.png" alt="Anteprima progetto MotorVip">
+                            </div>
+                        </a>
                         <div class="progetti-key-tags" aria-label="Punti chiave progetto">
                             <span class="tag">Information Architecture</span>
                             <span class="tag">Accessibility</span>
@@ -142,9 +150,11 @@
                 <div class="progetti-section">
                     <div class="progetti-text" data-parallax-speed="0.6">
                         <h2 class="h2-project-list">Villa sullo Stretto — Autonomia e crescita</h2>
-                        <div class="progetti-mockup-mobile" aria-hidden="true">
-                            <img src="images/mockup_villasullostretto-macbook.png" alt="">
-                        </div>
+                        <a href="case-study-villa-sullo-stretto.html" class="progetti-mockup-link" aria-label="Apri il case study Villa sullo Stretto">
+                            <div class="progetti-mockup-mobile">
+                                <img src="images/mockup_villasullostretto-macbook.png" alt="Anteprima progetto Villa sullo Stretto">
+                            </div>
+                        </a>
                         <div class="progetti-key-tags" aria-label="Punti chiave progetto">
                             <span class="tag">Booking UX</span>
                             <span class="tag">Gestione contenuti</span>
@@ -181,9 +191,11 @@
                     <div class="progetti-text" data-parallax-speed="0.6">
 
                         <h2 class="h2-project-list">Palestra — Sito per la gestione delle iscrizioni</h2>
-                        <div class="progetti-mockup-mobile" aria-hidden="true">
-                            <img src="images/mockup-progetti-palestra.png" alt="">
-                        </div>
+                        <a href="case-study-villa-sullo-stretto.html" class="progetti-mockup-link" aria-label="Apri il case study Palestra">
+                            <div class="progetti-mockup-mobile">
+                                <img src="images/mockup-progetti-palestra.png" alt="Anteprima progetto Palestra">
+                            </div>
+                        </a>
                         <div class="progetti-key-tags" aria-label="Punti chiave progetto">
                             <span class="tag">Booking UX</span>
                             <span class="tag">Gestione contenuti</span>
@@ -215,7 +227,7 @@
 
         <!-- CTA / Footer section -->
         <section class="snap-section project-cta-section">
-            <div class="container-narrow">
+            <div class="container-narrow project-cta-content">
                 <h2>Ti interessa lavorare insieme?</h2>
                 <p>Se ti riconosci in questi progetti, scrivimi e troviamo insieme la strada migliore per trasformare
                     l’idea in prodotto.</p>

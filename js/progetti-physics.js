@@ -35,8 +35,219 @@
     const isProgettiPage = document.body.classList.contains('progetti-page');
     if (!isProgettiPage) return;
 
-    const targetEl = document.querySelector('main');
+    const isDesktopViewport = window.matchMedia('(min-width: 992px)').matches;
+    const targetEl = isDesktopViewport
+        ? document.querySelector('.progetti-hero')
+        : document.querySelector('main');
     if (!targetEl) return;
+
+    function initCtaParticles() {
+        const ctaSection = document.querySelector('.project-cta-section');
+        if (!ctaSection || ctaSection.dataset.ctaParticlesInit === 'true') return;
+        ctaSection.dataset.ctaParticlesInit = 'true';
+
+        const ctaCanvas = document.createElement('canvas');
+        ctaCanvas.id = 'progetti-cta-particles';
+        ctaSection.insertBefore(ctaCanvas, ctaSection.firstChild);
+        const ctaCtx = ctaCanvas.getContext('2d');
+        if (!ctaCtx) return;
+
+        let cw = 0;
+        let ch = 0;
+        const isMobileCta = window.innerWidth < 992;
+        const ctaParticles = [];
+        const ctaCount = isMobileCta ? 10 : 16;
+        let ctaAnimId = 0;
+        let wasCtaInView = false;
+        let hasFocusKick = false;
+        let focusBlend = 0;
+        const FOCUS_IN_SPEED = 0.16;
+        const FOCUS_OUT_SPEED = 0.075;
+        const CTA_FOCUS_PULL = 0.0034;
+
+        function resizeCta() {
+            const rect = ctaSection.getBoundingClientRect();
+            const prevW = cw;
+            const prevH = ch;
+            cw = Math.max(1, Math.floor(rect.width));
+            ch = Math.max(1, Math.floor(rect.height));
+            ctaCanvas.width = cw;
+            ctaCanvas.height = ch;
+
+            // Evita "respawn" su mobile/resize: mantiene le posizioni relative.
+            if (ctaParticles.length && prevW > 0 && prevH > 0) {
+                const sx = cw / prevW;
+                const sy = ch / prevH;
+                for (let i = 0; i < ctaParticles.length; i++) {
+                    const p = ctaParticles[i];
+                    p.x = Math.max(p.boundR, Math.min(cw - p.boundR, p.x * sx));
+                    p.y = Math.max(p.boundR, Math.min(ch - p.boundR, p.y * sy));
+                }
+            }
+        }
+
+        function spawnCtaParticles() {
+            ctaParticles.length = 0;
+            for (let i = 0; i < ctaCount; i++) {
+                const w = 1.8 + Math.random() * 4.2;
+                const h = 1.8 + Math.random() * 4.2;
+                ctaParticles.push({
+                    x: Math.random() * cw,
+                    y: Math.random() * ch,
+                    w,
+                    h,
+                    boundR: Math.max(w, h) * 0.75,
+                    vx: (Math.random() - 0.5) * 0.24,
+                    vy: (Math.random() - 0.5) * 0.24,
+                    alpha: 0.14 + Math.random() * 0.22,
+                    pulse: Math.random() * Math.PI * 2,
+                    pulseSpeed: 0.01 + Math.random() * 0.013,
+                    jitter: 0.002 + Math.random() * 0.0024,
+                    isFree: Math.random() < 0.2,
+                    bandOffsetX: (Math.random() - 0.5) * (window.innerWidth < 992 ? 210 : 320),
+                    bandOffsetY: (Math.random() - 0.5) * (window.innerWidth < 992 ? 26 : 34),
+                    angle: Math.random() * Math.PI,
+                    va: (Math.random() - 0.5) * 0.014
+                });
+            }
+        }
+
+        function ctaRoundRect(x, y, w, h, r) {
+            const rr = Math.min(r, w / 2, h / 2);
+            ctaCtx.moveTo(x + rr, y);
+            ctaCtx.arcTo(x + w, y, x + w, y + h, rr);
+            ctaCtx.arcTo(x + w, y + h, x, y + h, rr);
+            ctaCtx.arcTo(x, y + h, x, y, rr);
+            ctaCtx.arcTo(x, y, x + w, y, rr);
+            ctaCtx.closePath();
+        }
+
+        function drawCta() {
+            ctaCtx.clearRect(0, 0, cw, ch);
+            const now = performance.now();
+            const viewportH = window.innerHeight || document.documentElement.clientHeight || ch;
+            const ctaRect = ctaSection.getBoundingClientRect();
+            const isCtaInView = ctaRect.top < viewportH * 0.8 && ctaRect.bottom > viewportH * 0.2;
+
+            if (isCtaInView && !wasCtaInView) {
+                hasFocusKick = false;
+            }
+            if (!isCtaInView) hasFocusKick = false;
+            wasCtaInView = isCtaInView;
+
+            // Transizione continua di stato: niente restart bruschi.
+            if (isCtaInView) {
+                focusBlend = Math.min(1, focusBlend + FOCUS_IN_SPEED);
+            } else {
+                focusBlend = Math.max(0, focusBlend - FOCUS_OUT_SPEED);
+            }
+            const focusEase = focusBlend * focusBlend * (3 - 2 * focusBlend);
+            const ctaButtonBlock = ctaSection.querySelector('.cta-buttons');
+            const sectionRect = ctaSection.getBoundingClientRect();
+            const blockRect = ctaButtonBlock ? ctaButtonBlock.getBoundingClientRect() : null;
+            const target = blockRect
+                ? {
+                    x: blockRect.left - sectionRect.left + blockRect.width / 2,
+                    y: blockRect.top - sectionRect.top + blockRect.height / 2
+                }
+                : null;
+
+            if (!isMobileCta && focusEase > 0.08 && !hasFocusKick && target) {
+                hasFocusKick = true;
+                for (let i = 0; i < ctaParticles.length; i++) {
+                    const p = ctaParticles[i];
+                    if (p.isFree) continue;
+                    const dx = target.x - p.x;
+                    const dy = target.y - p.y;
+                    const dist = Math.max(1, Math.hypot(dx, dy));
+                    // "Colpo" iniziale come in hero, ma senza swirl.
+                    p.vx += (dx / dist) * 0.22;
+                    p.vy += (dy / dist) * 0.22;
+                }
+            }
+
+            for (let i = 0; i < ctaParticles.length; i++) {
+                const p = ctaParticles[i];
+                // Moto flottante continuo: nessun respawn ciclico.
+                p.vx += (Math.random() - 0.5) * p.jitter;
+                p.vy += (Math.random() - 0.5) * p.jitter;
+
+                if (focusEase > 0 && target && !p.isFree) {
+                    const targetX = target.x + p.bandOffsetX;
+                    const targetY = target.y + p.bandOffsetY;
+                    const dx = targetX - p.x;
+                    const dy = targetY - p.y;
+                    const dist = Math.max(0.001, Math.hypot(dx, dy));
+                    const nx = dx / dist;
+                    const ny = dy / dist;
+                    // Banda orizzontale: priorita all'allineamento su X, Y piu morbido.
+                    const pullGain = Math.min(1.35, 0.75 + Math.abs(dx) / 180);
+                    const radialForce = CTA_FOCUS_PULL * pullGain * focusEase;
+                    const jitter = 0.0018;
+                    // Solo fluttuazione guidata, senza orbita circolare.
+                    p.vx += nx * radialForce + (Math.random() - 0.5) * jitter;
+                    p.vy += ny * radialForce * 0.72 + (Math.random() - 0.5) * jitter;
+                }
+
+                const maxV = focusEase > 0 ? 0.58 : 0.32;
+                p.vx = Math.max(-maxV, Math.min(maxV, p.vx));
+                p.vy = Math.max(-maxV, Math.min(maxV, p.vy));
+                p.x += p.vx;
+                p.y += p.vy;
+                p.pulse += p.pulseSpeed;
+                p.angle += p.va;
+
+                if (p.x <= p.boundR || p.x >= cw - p.boundR) {
+                    p.vx *= -1;
+                    p.x = Math.max(p.boundR, Math.min(cw - p.boundR, p.x));
+                }
+                if (p.y <= p.boundR || p.y >= ch - p.boundR) {
+                    p.vy *= -1;
+                    p.y = Math.max(p.boundR, Math.min(ch - p.boundR, p.y));
+                }
+
+                let a = Math.max(0.08, Math.min(0.34, p.alpha + Math.sin(p.pulse) * 0.06));
+                if (focusEase > 0 && target) {
+                    const d = Math.hypot(target.x - p.x, target.y - p.y);
+                    const near = Math.max(0, 1 - d / 160);
+                    a += near * 0.16 * focusEase;
+                }
+                a = Math.min(0.48, a);
+
+                // Stile hero-like: micro-confetti arrotondati, chiari.
+                ctaCtx.save();
+                ctaCtx.translate(p.x, p.y);
+                ctaCtx.rotate(p.angle);
+                ctaCtx.fillStyle = `rgba(255, 255, 255, ${a})`;
+                ctaCtx.beginPath();
+                ctaRoundRect(-p.w / 2, -p.h / 2, p.w, p.h, Math.min(p.w, p.h) * 0.5);
+                ctaCtx.fill();
+                ctaCtx.restore();
+            }
+            ctaAnimId = requestAnimationFrame(drawCta);
+        }
+
+        let ctaResizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(ctaResizeTimer);
+            ctaResizeTimer = setTimeout(() => {
+                resizeCta();
+            }, 160);
+        }, { passive: true });
+
+        resizeCta();
+        spawnCtaParticles();
+        ctaAnimId = requestAnimationFrame(drawCta);
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                cancelAnimationFrame(ctaAnimId);
+                ctaAnimId = 0;
+            } else if (!ctaAnimId) {
+                ctaAnimId = requestAnimationFrame(drawCta);
+            }
+        });
+    }
 
     const canvas = document.createElement('canvas');
     canvas.id = 'progetti-physics-canvas';
@@ -372,6 +583,7 @@
 
     function scheduleStart() {
         const boot = () => {
+            initCtaParticles();
             startPhysicsWhenReady().catch(() => {
                 // Fail silent: la pagina resta usabile senza physics.
             });
