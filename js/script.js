@@ -316,6 +316,7 @@ function initProgettiScrollLock() {
     const sections = Array.from(container.querySelectorAll('.progetti-snap'));
     let isAnimating = false;
     let currentSection = 0;
+    let lastLockedSectionBeforeFooter = null;
 
     // Controlla se è mobile/tablet (larghezza <= 992px)
     const isMobile = window.innerWidth <= 992;
@@ -345,6 +346,79 @@ function initProgettiScrollLock() {
         }, 600);
     }
 
+    // Quando entriamo nei progetti via click (freccia/anchor), dobbiamo
+    // attivare subito lo stato "scroll-locked" altrimenti l'effetto onepage
+    // parte solo dopo un wheel manuale.
+    function lockAndGoToSection(index) {
+        if (isAnimating) return;
+        isAnimating = true;
+
+        // Porta l'utente nell'area progetti e abilita il lock.
+        container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        setTimeout(() => {
+            body.classList.add('scroll-locked');
+            currentSection = Math.max(0, Math.min(sections.length - 1, index));
+            sections[currentSection].scrollIntoView({ behavior: 'smooth', block: 'center' });
+            setTimeout(() => { isAnimating = false; }, 520);
+        }, 620);
+    }
+
+    // Freccia in hero: attiva subito onepage su desktop
+    const heroArrow = document.querySelector('.progetti-hero .scroll-indicator');
+    if (heroArrow) {
+        heroArrow.addEventListener('click', (e) => {
+            e.preventDefault();
+            lockAndGoToSection(0);
+        });
+    }
+
+    // Refresh / deep link: se atterri già dentro i progetti (hash o scroll restoration),
+    // attiva subito il lock e sincronizza la sezione corrente.
+    function bootstrapLockIfAlreadyInProjects() {
+        const hash = window.location.hash || '';
+        const hashTarget = hash ? document.querySelector(hash) : null;
+
+        // Se c'è un hash che punta a una sezione progetto, usiamo quello come target.
+        let targetIndex = -1;
+        if (hashTarget && sections.includes(hashTarget)) {
+            targetIndex = sections.indexOf(hashTarget);
+        }
+
+        const scrollY = window.scrollY || window.pageYOffset || 0;
+        const containerTop = container.offsetTop || 0;
+        const footerTop = footer.offsetTop || Number.MAX_SAFE_INTEGER;
+        const isInsideProjectsByScroll = scrollY >= (containerTop - 10) && scrollY < (footerTop - 10);
+
+        // Se non abbiamo hash ma siamo già dentro l'area progetti (refresh),
+        // troviamo la sezione più vicina al centro viewport.
+        if (targetIndex === -1 && isInsideProjectsByScroll) {
+            const viewportCenter = (window.innerHeight || document.documentElement.clientHeight || 800) / 2;
+            let bestIdx = 0;
+            let bestDist = Number.POSITIVE_INFINITY;
+            for (let i = 0; i < sections.length; i++) {
+                const r = sections[i].getBoundingClientRect();
+                const sectionCenter = r.top + r.height / 2;
+                const d = Math.abs(sectionCenter - viewportCenter);
+                if (d < bestDist) {
+                    bestDist = d;
+                    bestIdx = i;
+                }
+            }
+            targetIndex = bestIdx;
+        }
+
+        // Se siamo ancora in hero (top pagina) non facciamo nulla.
+        if (targetIndex === -1) return;
+
+        body.classList.add('scroll-locked');
+        currentSection = Math.max(0, Math.min(sections.length - 1, targetIndex));
+        // Niente smooth qui: evita doppie animazioni al refresh.
+        sections[currentSection].scrollIntoView({ behavior: 'auto', block: 'center' });
+    }
+
+    // Aspetta un tick: lascia al browser il tempo di applicare scroll restoration/hash.
+    setTimeout(bootstrapLockIfAlreadyInProjects, 0);
+
     function unlockScrollToHero() {
         if (isAnimating) return;
         isAnimating = true;
@@ -364,6 +438,9 @@ function initProgettiScrollLock() {
         if (isAnimating) return;
         isAnimating = true;
 
+        // Memorizza dove eravamo prima di uscire verso il footer.
+        // Al rientro dal basso, riagganciamo alla stessa sezione (ultima vista).
+        lastLockedSectionBeforeFooter = currentSection;
         body.classList.remove('scroll-locked');
         footer.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
@@ -375,7 +452,11 @@ function initProgettiScrollLock() {
         isAnimating = true;
 
         body.classList.add('scroll-locked');
-        currentSection = sections.length - 1;
+        const fallback = sections.length - 1;
+        const idxFromMemory = (typeof lastLockedSectionBeforeFooter === 'number')
+            ? Math.max(0, Math.min(sections.length - 1, lastLockedSectionBeforeFooter))
+            : fallback;
+        currentSection = idxFromMemory;
         sections[currentSection].scrollIntoView({ behavior: 'smooth', block: 'center' });
 
         setTimeout(() => { isAnimating = false; }, 600);

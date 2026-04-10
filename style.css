@@ -208,7 +208,7 @@ body.progetti-page.scroll-locked {
         justify-content: flex-start;
         align-items: stretch;
         overflow-y: hidden;
-        padding-top: calc(3em + env(safe-area-inset-top, 0px));
+        padding-top: 1rem;
         padding-bottom: max(1.1rem, env(safe-area-inset-bottom));
     }
 
@@ -298,6 +298,14 @@ body.progetti-page .snap-section {
     position: relative;
 }
 
+/* Mobile override (ordine CSS): evita doppio "punto di snap" dovuto al center.
+   Su touch vogliamo sempre aggancio in alto (start). */
+@media (max-width: 991px) {
+    body.progetti-page .snap-section {
+        scroll-snap-align: start;
+    }
+}
+
 body.progetti-page .progetti-snap {
     position: relative;
     background-size: cover;
@@ -331,7 +339,7 @@ body.progetti-page .progetti-snap::before {
     position: absolute;
     inset: 0;
     /* Desktop default: sfumatura orizzontale */
-    background: linear-gradient(90deg, rgba(0, 0, 0, 0.84) 0%, rgba(0, 0, 0, 0.62) 35%, rgba(0, 0, 0, 0.26) 70%, rgba(0, 0, 0, 0.06) 100%);
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.2) 35%, rgba(0, 0, 0, 0.26) 70%, rgba(0, 0, 0, 0.06) 100%);
     pointer-events: none;
     z-index: 1;
 }
@@ -1233,7 +1241,7 @@ a:focus-visible {
 footer {
     background-color: #222;
     color: #ccc;
-    padding: 80px 0 40px 0;
+    padding: 2rem 0 2rem 0;
 }
 
 .footer-top {
@@ -1326,7 +1334,7 @@ footer {
 
 .footer-bottom p {
     text-align: center;
-    padding-top: 40px;
+    padding-top: 1rem;
     font-size: 14px;
     color: #888;
 }
