@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" class="progetti-page">
 
 <head>
     <meta charset="UTF-8">
@@ -8,9 +8,6 @@
     <title>Progetti - Alessandro Maiorana</title>
     <link rel="icon" type="image/svg+xml" href="logoAM.svg">
     <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 </head>
 
 <body class="progetti-page">
@@ -36,7 +33,7 @@
                     <li><a href="index.html">Home</a></li>
                     <li><a href="progetti.html">Progetti</a></li>
                     <li><a href="aboutme.html">Chi sono</a></li>
-                    <a href="contact.html" class="btn btn-primary nav-cta">Contattami</a>
+                    <li><a href="contact.html" class="btn btn-primary">Contattami</a></li>
                 </ul>
             </nav>
 
@@ -53,41 +50,53 @@
         <!-- Hero iniziale (entra senza lock, poi si attiva lo scroll "one page") -->
         <section class="snap-section progetti-hero">
             <div class="container-narrow">
-                <h1 class="hover-text-container">
+                <h1 class="hover-text-container h1-hero">
                     <span class="base-text">Sistemi in Equilibrio: UX/UI tra Struttura e Interazione</span>
                     <span class="hover-text">Sistemi in Equilibrio: UX/UI tra Struttura e Interazione</span>
                 </h1>
-                <p class="lead">
-                    Scorri per scoprire i progetti: tre studi concreti, ognuno con risultati misurabili.
+                <p class="p-main">
+                    Scorri per scoprire i miei progetti
                 </p>
-                <div class="scroll-indicator" aria-hidden="true">↓</div>
+                <a class="scroll-indicator" href="#progetto-1" aria-label="Vai al primo progetto">
+                    <svg class="scroll-indicator-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M7.5 10.5L12 15l4.5-4.5"></path>
+                    </svg>
+                </a>
             </div>
         </section>
 
         <!-- Sezioni scorrevoli (blocca lo scroll con JS) -->
         <div class="snap-container" id="progetti-snap">
 
-            <section class="snap-section progetti-snap" data-section="0"
+            <section id="progetto-1" class="snap-section progetti-snap" data-section="0"
                 style="background-image: url('images/mockup-progetti-teatrobasilica.webp');">
                 <div class="progetti-section">
                     <div class="progetti-text" data-parallax-speed="0.6">
 
-                        <h2>Teatro Basilica — Coinvolgimento e accessibilità</h2>
+                        <h2 class="h2-project-list">Teatro Basilica — UX accessibile</h2>
+                        <a href="case-study-teatro-basilica.html" class="progetti-mockup-link" aria-label="Apri il case study Teatro Basilica">
+                            <div class="progetti-mockup-mobile">
+                                <img src="images/mockup-progetti-teatrobasilica.webp" alt="Anteprima progetto Teatro Basilica">
+                            </div>
+                        </a>
+                        <div class="progetti-key-tags" aria-label="Punti chiave progetto">
+                            <span class="tag">User Research</span>
+                            <span class="tag">Prototipazione</span>
+                            <span class="tag">Design System</span>
+                        </div>
+                        <p class="progetti-mobile-teaser">Un'esperienza pensata per rendere la cultura accessibile, dal primo click al checkout. Ogni scelta UX semplifica la navigazione e rende piu immediata la scoperta degli spettacoli.</p>
                         <div class="progetti-cards">
                             <div class="progetti-card">
-                                <h4>Ricerca utenti</h4>
                                 <p>Interviste, analisi dei bisogni e mappatura dei customer journey per capire i punti
                                     critici.</p>
                                 <span class="tag">User Research</span>
                             </div>
                             <div class="progetti-card">
-                                <h4>Prototipi rapidi</h4>
                                 <p>Wireframe e prototipi interattivi creati per testare flussi di acquisto e filtraggio
                                     prodotti.</p>
                                 <span class="tag">Prototipazione</span>
                             </div>
                             <div class="progetti-card">
-                                <h4>Sistema di design</h4>
                                 <p>Design system modulare per mantenere coerenza visiva tra il sito e l’esperienza
                                     mobile.</p>
                                 <span class="tag">Design System</span>
@@ -103,22 +112,30 @@
                 <div class="progetti-section">
                     <div class="progetti-text" data-parallax-speed="0.6">
 
-                        <h2>MotorVip — Redesign per un concessionario moto</h2>
+                        <h2 class="h2-project-list">MotorVip — UX Concept & Design Proposal</h2>
+                        <a href="case-study-concessionario-moto.html" class="progetti-mockup-link" aria-label="Apri il case study MotorVip">
+                            <div class="progetti-mockup-mobile">
+                                <img src="images/mockup-progetti-motorvip2.png" alt="Anteprima progetto MotorVip">
+                            </div>
+                        </a>
+                        <div class="progetti-key-tags" aria-label="Punti chiave progetto">
+                            <span class="tag">Information Architecture</span>
+                            <span class="tag">Accessibility</span>
+                            <span class="tag">Contenuti dinamici</span>
+                        </div>
+                        <p class="progetti-mobile-teaser">Navigazione piu chiara e contenuti dinamici per trovare subito eventi e informazioni utili. L'architettura dell'informazione e stata ottimizzata per ridurre passaggi e aumentare orientamento.</p>
                         <div class="progetti-cards">
                             <div class="progetti-card">
-                                <h4>Architettura chiara</h4>
                                 <p>Struttura delle informazioni ripensata per ridurre i click e trovare gli eventi
                                     rapidamente.</p>
                                 <span class="tag">Information Architecture</span>
                             </div>
                             <div class="progetti-card">
-                                <h4>Accessibilità</h4>
                                 <p>Colori e contrasti ottimizzati, keyboard navigation e gestione della lettura
                                     automatica.</p>
                                 <span class="tag">Accessibility</span>
                             </div>
                             <div class="progetti-card">
-                                <h4>Contenuti dinamici</h4>
                                 <p>Modulo eventi e calendario interattivo con filtri personalizzati per categorie.</p>
                                 <span class="tag">Contenuti dinamici</span>
                             </div>
@@ -129,25 +146,33 @@
             </section>
 
             <section class="snap-section progetti-snap" data-section="2"
-                style="background-image: url('images/mockup_villasullostretto-macbook.png');">
+                style="background-image: url('images/mockup_villa_sullo_stretto_mobile.png');">
                 <div class="progetti-section">
                     <div class="progetti-text" data-parallax-speed="0.6">
-                        <h2>Villa sullo Stretto — Booking senza commissioni</h2>
+                        <h2 class="h2-project-list">Villa sullo Stretto — Autonomia e crescita</h2>
+                        <a href="case-study-villa-sullo-stretto.html" class="progetti-mockup-link" aria-label="Apri il case study Villa sullo Stretto">
+                            <div class="progetti-mockup-mobile">
+                                <img src="images/mockup_villa_sullo_stretto_mobile.png" alt="Anteprima progetto Villa sullo Stretto">
+                            </div>
+                        </a>
+                        <div class="progetti-key-tags" aria-label="Punti chiave progetto">
+                            <span class="tag">Booking UX</span>
+                            <span class="tag">Gestione contenuti</span>
+                            <span class="tag">Data Driven</span>
+                        </div>
+                        <p class="progetti-mobile-teaser">Un flusso di prenotazione semplice che aumenta autonomia gestionale e conversioni. Il sito supporta decisioni rapide grazie a contenuti aggiornabili e segnali chiari lungo tutto il percorso.</p>
                         <div class="progetti-cards">
                             <div class="progetti-card">
-                                <h4>Flusso di prenotazione</h4>
                                 <p>Esperienza checkout con widget di calendario e selezione camera ottimizzata per
                                     conversione.</p>
                                 <span class="tag">Booking UX</span>
                             </div>
                             <div class="progetti-card">
-                                <h4>Gestione offerte</h4>
                                 <p>Pannello di controllo per promozioni, codici sconto e disponibilità in tempo reale.
                                 </p>
                                 <span class="tag">Gestione contenuti</span>
                             </div>
                             <div class="progetti-card">
-                                <h4>Analisi dati</h4>
                                 <p>Dashboard analitica per monitorare conversioni, tassi di abbandono e performance
                                     delle tariffe.</p>
                                 <span class="tag">Data Driven</span>
@@ -161,25 +186,33 @@
 
 
             <section class="snap-section progetti-snap reverse" data-section="3"
-                style="background-image: url('images/mockup-progetti-palestra.png');">
+                style="background-image: url('images/mockup_palestra_desktop.png');">
                 <div class="progetti-section">
                     <div class="progetti-text" data-parallax-speed="0.6">
 
-                        <h2>Palestra — Sito per la gestione delle iscrizioni</h2>
+                        <h2 class="h2-project-list">Palestra — Sito per la gestione delle iscrizioni</h2>
+                        <a href="case-study-villa-sullo-stretto.html" class="progetti-mockup-link" aria-label="Apri il case study Palestra">
+                            <div class="progetti-mockup-mobile">
+                                <img src="images/mockup-progetti-palestra.png" alt="Anteprima progetto Palestra">
+                            </div>
+                        </a>
+                        <div class="progetti-key-tags" aria-label="Punti chiave progetto">
+                            <span class="tag">Booking UX</span>
+                            <span class="tag">Gestione contenuti</span>
+                            <span class="tag">Data Driven</span>
+                        </div>
+                        <p class="progetti-mobile-teaser">Iscrizioni e gestione corsi in un percorso rapido, chiaro e ottimizzato per mobile. L'interfaccia guida l'utente passo dopo passo, riducendo attriti e tempi di completamento.</p>
                         <div class="progetti-cards">
                             <div class="progetti-card">
-                                <h4>Iscrizione semplificata</h4>
                                 <p>Un'esperienza intuitiva per la registrazione e la gestione delle iscrizioni.</p>
                                 <span class="tag">Booking UX</span>
                             </div>
                             <div class="progetti-card">
-                                <h4>Gestione offerte</h4>
                                 <p>Pannello di controllo per promozioni, codici sconto e disponibilità in tempo reale.
                                 </p>
                                 <span class="tag">Gestione contenuti</span>
                             </div>
                             <div class="progetti-card">
-                                <h4>Analisi dati</h4>
                                 <p>Dashboard analitica per monitorare conversioni, tassi di abbandono e performance
                                     delle tariffe.</p>
                                 <span class="tag">Data Driven</span>
@@ -194,7 +227,7 @@
 
         <!-- CTA / Footer section -->
         <section class="snap-section project-cta-section">
-            <div class="container-narrow">
+            <div class="container-narrow project-cta-content">
                 <h2>Ti interessa lavorare insieme?</h2>
                 <p>Se ti riconosci in questi progetti, scrivimi e troviamo insieme la strada migliore per trasformare
                     l’idea in prodotto.</p>
@@ -269,6 +302,7 @@
     </footer>
 
     <script src="js/script.js"></script>
+    <script src="js/progetti-physics.js"></script>
 
 </body>
 
